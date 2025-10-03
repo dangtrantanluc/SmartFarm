@@ -1,0 +1,65 @@
+# =========================
+# Visual Studio / .NET MAUI
+# =========================
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build outputs
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+*.dbmdl
+*.bak
+*.cache
+*.pdb
+*.mdb
+*.opendb
+*.ide
+
+# MAUI generated resources
+*.nupkg
+*.appx
+*.msix
+*.msixupload
+*.msixbundle
+*.appxbundle
+*.vsidx
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+.venv/
+env/
+venv/
+ENV/
+
+# =========================
+# Data / ML models
+# =========================
+*.csv
+*.tsv
+*.json
+*.h5
+*.pth
+*.ckpt
+*.joblib
+*.npz
+
+# Nếu muốn commit dataset thì bỏ comment dòng dưới
+# !ml_models/data/*.csv
+
+# =========================
+# OS-specific
+# =========================
+.DS_Store
+Thumbs.db
