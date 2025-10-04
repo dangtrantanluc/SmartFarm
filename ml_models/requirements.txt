@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+torch       # hoặc torch-cuXX nếu dùng CUDA
+torchvision
+pillow
+python-multipart
+numpy

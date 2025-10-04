@@ -55,9 +55,10 @@ ENV/
 *.joblib
 *.npz
 
+
 # Nếu muốn commit dataset thì bỏ comment dòng dưới
 # !ml_models/data/*.csv
-
+ml_models/resnet50_plant_disease.pth
 # =========================
 # OS-specific
 # =========================
