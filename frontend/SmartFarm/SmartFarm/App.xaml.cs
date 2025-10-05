@@ -1,4 +1,5 @@
-﻿namespace SmartFarm
+﻿
+namespace SmartFarm
 {
     public partial class App : Application
     {

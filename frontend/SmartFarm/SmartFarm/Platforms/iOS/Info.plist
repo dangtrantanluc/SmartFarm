@@ -28,5 +28,17 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+
+	<!-- Thêm quyền camera-->
+	<key>NSCameraUsageDescription</key>
+	<string>Ứng dụng cần truy cập camera để chụp ảnh cây trồng và nhận diện bệnh hại.</string>
+	
+	<!-- Quyền chọn ảnh từ thư viện (photo library) -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Ứng dụng cần truy cập thư viện ảnh để chọn hình cây trồng cần nhận diện.</string>
+	
+	<!-- Quyền lưu ảnh vào thư viện -->
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Ứng dụng cần lưu ảnh vào thư viện để lưu kết quả nhận diện.</string>
 </dict>
 </plist>

@@ -64,3 +64,5 @@ ml_models/resnet50_plant_disease.pth
 # =========================
 .DS_Store
 Thumbs.db
+
+.fake

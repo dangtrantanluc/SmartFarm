@@ -6,9 +6,14 @@
     xmlns:local="clr-namespace:SmartFarm"
     Title="SmartFarm">
 
+
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
+
+     <ShellContent 
+        Title="Camera" 
+        ContentTemplate="{DataTemplate local:PlantPage}" />
 
 </Shell>
