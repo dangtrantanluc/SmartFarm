@@ -2,6 +2,7 @@ using Microsoft.Maui.Media;
 using Microsoft.Maui.Storage;
 using System.Net.Http.Json;
 using System.Net.Http;
+using System.IO;  // Thêm cho MemoryStream
 
 namespace SmartFarm;
 public partial class PlantPage : ContentPage
@@ -53,10 +54,21 @@ public partial class PlantPage : ContentPage
 
     private async Task LoadPhotoToImage()
     {
-        using var stream = await photo!.OpenReadAsync();  // ! để assert not null (đã check trước)
-        if (stream is null) return;
+        await using var originalStream = await photo!.OpenReadAsync();
+        if (originalStream is null) return;
 
-        SelectedImage.Source = ImageSource.FromStream(() => stream);
+        using var memoryStream = new MemoryStream();
+        await originalStream.CopyToAsync(memoryStream);
+        memoryStream.Position = 0;  // Reset position để read từ đầu
+
+        SelectedImage.Source = ImageSource.FromStream(() => new MemoryStream(memoryStream.ToArray()));
+        ClearButton.IsVisible = true;  // Hiện nút X khi có ảnh  
+    }
+    private void OnClearClicked(object sender, EventArgs e)
+    {
+        SelectedImage.Source = null;
+        photo = null;
+        ClearButton.IsVisible = false;  // Ẩn nút X sau khi clear
     }
 
     private async void OnUploadClicked(object sender, EventArgs e)
@@ -68,7 +80,7 @@ public partial class PlantPage : ContentPage
         }
 
         using var content = new MultipartFormDataContent();
-        using var stream = await photo.OpenReadAsync();
+        await using var stream = await photo.OpenReadAsync();
         if (stream is null)
         {
             await DisplayAlert("Lỗi", "Không đọc được ảnh.", "OK");
