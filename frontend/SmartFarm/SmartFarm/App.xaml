@@ -9,6 +9,10 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- Converter cho chat bubble -->
+            <local:BoolToColorConverter x:Key="BoolToColorConverter" />
+            <local:BoolToAlignConverter x:Key="BoolToAlignConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
