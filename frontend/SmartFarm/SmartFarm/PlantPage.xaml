@@ -24,11 +24,32 @@
                             TextColor="White"
                             CornerRadius="8"/>
 
-         <Image x:Name="SelectedImage"
-                           HeightRequest="250"
-                           Aspect="AspectFill"
-                           BackgroundColor="#E0E0E0"
-                           Margin="0,10,0,0"/>
+         <!-- Thêm Grid để chồng Button X lên Image -->
+        <Grid HeightRequest="250"  
+             Margin="0,10,0,0">
+                        <Image x:Name="SelectedImage"
+                               Aspect="AspectFit"  
+                               BackgroundColor="#E0E0E0"
+                               HorizontalOptions="Fill"
+                               VerticalOptions="Fill"/>
+
+                        <!-- Button X ở góc phải trên -->
+                        <Button x:Name="ClearButton"
+                                Text="X"
+                                Clicked="OnClearClicked"
+                                BackgroundColor="Red"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                WidthRequest="25"
+                                HeightRequest="25"
+                                CornerRadius="15"  
+                                HorizontalOptions="End"  
+                                VerticalOptions="Start"  
+                                Margin="0,-15,-15,0"  
+                                TranslationY="-10"
+                                IsVisible="False"/>  <!--!Ẩn -->
+                    </Grid>
 
          <Button Text="Tìm kiếm"
                             Clicked="OnUploadClicked"
