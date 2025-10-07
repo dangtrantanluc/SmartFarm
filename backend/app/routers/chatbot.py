@@ -1,13 +1,13 @@
 from fastapi import FastAPI, APIRouter, HTTPException
 from pydantic import BaseModel
-import ml_models.plant_disease as rag
+import ml_models.plant_disease.rag as rag
 router = APIRouter()
 
 class QueryRequest(BaseModel):
     query: str
 
-pdf_path = r"C:\Users\dttan\Downloads\computer-vision\CV-Bài 02 - Chương 1 - OpenCV-PyNum.pdf"
-rag_chain = get_qa_chain(pdf_path)
+# pdf_path = r"C:\Users\dttan\Downloads\computer-vision\CV-Bài 02 - Chương 1 - OpenCV-PyNum.pdf"
+# rag_chain = get_qa_chain(pdf_path)
 
 @router.get("/")
 def hello():

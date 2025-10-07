@@ -9,11 +9,11 @@ from langchain_community.llms.fake import FakeListLLM
 from langchain_community.llms import Ollama
 from huggingface_hub import login
 from langchain_huggingface import HuggingFacePipeline
-from transformers import pipeline, AutoModelForCausalLM, AutoTokenizer
+from transformers import pipeline, AutoModelForCausalLM, AutoTokenizer, AutoModelForSeq2SeqLM
 import torch
 
 # Đăng nhập HuggingFace Hub (điền token của bạn vào)
-login(token="HF_Token")
+# login(token="")
 
 # Prompt hệ thống
 system_prompt = """Bạn là một trợ lý AI hỗ trợ tìm thông tin từ tài liệu.
@@ -29,23 +29,29 @@ rag_prompt = ChatPromptTemplate.from_messages([
 ])
 
 
-tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-1B")
-model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.2-1B")
+tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-small")
+model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-small")
 
 # Comment lại HuggingFace Pipeline để tránh lỗi
 #Tạo pipeline local với cấu hình an toàn
 print("Đang tải model ...")
+# pipe = pipeline(
+#     "text-generation",
+#     model=model,
+#     tokenizer=tokenizer,
+#     device="cuda",
+#     temperature=0.7,
+#     max_new_tokens=100,
+#     do_sample=True,
+#     truncation=True
+# ) 
 pipe = pipeline(
-    "text-generation",
+    "text2text-generation",
     model=model,
     tokenizer=tokenizer,
-    device="cuda",
-    temperature=0.7,
-    max_new_tokens=100,
-    do_sample=True,
-    truncation=True
-) 
-
+    device=0 if torch.cuda.is_available() else -1,
+    max_new_tokens=128
+)
 llm = HuggingFacePipeline(pipeline=pipe)
 
 def get_qa_chain(pdf_path: str):
