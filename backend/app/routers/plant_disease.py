@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File,HTTPException
+from fastapi import APIRouter, UploadFile, File,HTTPException, Form
 from pydantic import BaseModel
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
@@ -41,7 +41,7 @@ def health():
 
 
 @router.post("/predict", response_model=PredictResponse)
-async def predict(file: UploadFile = File(...), top_k: int = 3):
+async def predict(file: UploadFile = File(...), top_k: int = Form(3)):
     if file.content_type.split("/")[0] != "image":
         raise HTTPException(status_code=400, detail="File must be an image.")
 

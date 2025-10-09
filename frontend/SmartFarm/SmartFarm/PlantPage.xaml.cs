@@ -2,6 +2,7 @@ using System.IO;  // Thêm cho MemoryStream
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text.Json;
 using Microsoft.Maui.Devices;
 using Microsoft.Maui.Media;
 using Microsoft.Maui.Storage;
@@ -26,8 +27,14 @@ public partial class PlantPage : ContentPage
 
         predictResult.WidthRequest = screenWidth * 0.85;
 
+        bgPredict.WidthRequest = screenWidth;
+        bgPredict.HeightRequest = screenHeight;
 
-        _httpClient.BaseAddress = new Uri("http://127.0.0.1:8000");
+        titlePage.WidthRequest = screenWidth;
+
+
+
+        _httpClient.BaseAddress = new Uri("http://192.168.88.209:8000");
         _httpClient.Timeout = TimeSpan.FromSeconds(180);
 
     }
@@ -107,34 +114,50 @@ public partial class PlantPage : ContentPage
         using var content = new StreamContent(stream);
         //content.Add(new StreamContent(stream), "file", photo.FileName ?? "image.jpg");  // Handle null FileName
 
-        form.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+        content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
         form.Add(content, "file", Path.GetFileName(photo.FileName));
         // Thêm tham số top_k
         form.Add(new StringContent("3"), "top_k");
-        await DisplayAlert("Looix","2", "OK");
-        // Gửi request tới astAPI
-        var resp = await _httpClient.PostAsync("/plant/predict", form);
 
-        await DisplayAlert("Looix","3", "OK");
-        resp.EnsureSuccessStatusCode();
-        var json = await resp.Content.ReadAsStringAsync();
-        // parse JSON (Newtonsoft.Json or System.Text.Json)
-           
-        if (resp.IsSuccessStatusCode)
+        try
         {
-            var result = await resp.Content.ReadFromJsonAsync<PredictionResult?>();
-            if (result is not null)
+            // Gửi request tới astAPI
+            var resp = await _httpClient.PostAsync("/plant/predict", form);
+            resp.EnsureSuccessStatusCode();
+
+            if (resp.IsSuccessStatusCode)
             {
-                ResultLabel.Text = $"Kết quả: {result.Prediction}";
+                var json = await resp.Content.ReadAsStringAsync();
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+
+                var result = JsonSerializer.Deserialize<DiseaseResp>(json, options);
+
+                var predictLabel = result.predicted_label;
+                var confidence = result.confidence;
+                if (result.alternatives != null && result.alternatives.Count > 0)
+                {
+                    foreach (var p in result.alternatives)
+                    {
+
+                    }
+                } 
+                if(result.guide != null)
+                {
+
+                }
+
             }
             else
             {
-                ResultLabel.Text = "Không nhận được kết quả.";
+                
             }
         }
-        else
+        catch (Exception ex)
         {
-            ResultLabel.Text = "Lỗi kết nối server AI.";
+            await DisplayAlert("Looix", ex.ToString(), "OK");
         }
     }
 
@@ -146,16 +169,13 @@ public partial class PlantPage : ContentPage
     }
 }
 
-public class PredictionResult
-{
-    public string? Prediction { get; set; }  // Nullable để an toàn
-}
+
 
 public class DiseaseResp
 {
     public string? predicted_label { get; set; } // Tên loại bệnh
     public string? confidence { get; set; } // độ chính xác
-    public List<String>? alternatives { get; set; } // Những dự đoán có thể liên quan
+    public List<Alternative>? alternatives { get; set; } // Những dự đoán có thể liên quan
     public Guide? guide { get; set; } // Dấu hiệu, phòng và trị bệnh cho loại bệnh được dự đoán.
 }
 public class Guide
@@ -164,4 +184,10 @@ public class Guide
     public string? symptoms { get; set; } // dấu hiệu của bệnh 
     public string? prevention  { get; set; } //Phòng ngừa bệnh cho  cây
     public string? treatment { get; set; } // Cách trị bệnh cho cây
+}
+
+public class Alternative
+{
+    public String? label { get; set; } // tên của loại cây
+    public Double? score { get; set; } // độ chính xác
 }
