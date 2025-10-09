@@ -1,6 +1,7 @@
 from fastapi import FastAPI, APIRouter, HTTPException
 from pydantic import BaseModel
-import ml_models.plant_disease.rag as rag
+from ml_models.plant_disease import rag 
+# import ml_models.plant_disease.rag as rag
 router = APIRouter()
 
 class QueryRequest(BaseModel):
