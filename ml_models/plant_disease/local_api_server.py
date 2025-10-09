@@ -24,19 +24,19 @@ generator = pipeline(
 )
 print("Model đã được tải!")
 
-MODEL_PATH = "ml_models/resnet50_plant_disease.pth"
-CLASS_NAMES_PATH = "ml_models/data/plant_disease_names.txt"  # mỗi dòng một class label
-DISEASE_JSON = "ml_models/data/disease_guide.json"
+# MODEL_PATH = "ml_models/resnet50_plant_disease.pth"
+# CLASS_NAMES_PATH = "ml_models/data/plant_disease_names.txt"  # mỗi dòng một class label
+# DISEASE_JSON = "ml_models/data/disease_guide.json"
 
-# Load disease guide
-with open(DISEASE_JSON, "r", encoding="utf-8") as f:
-    DISEASE_GUIDE = json.load(f)
+# # Load disease guide
+# with open(DISEASE_JSON, "r", encoding="utf-8") as f:
+#     DISEASE_GUIDE = json.load(f)
 
-# Load class names
-with open(CLASS_NAMES_PATH, "r", encoding="utf-8") as f:
-    CLASS_NAMES = [r.strip() for r in f.readlines()]
+# # Load class names
+# with open(CLASS_NAMES_PATH, "r", encoding="utf-8") as f:
+#     CLASS_NAMES = [r.strip() for r in f.readlines()]
 
-NUM_CLASSES = len(CLASS_NAMES)
+# NUM_CLASSES = len(CLASS_NAMES)
 
 # Load model plant disease(synchronous — tại startup)
 model, class_names, device = load_model(MODEL_PATH, num_classes=NUM_CLASSES, class_names_path=CLASS_NAMES_PATH)
@@ -78,46 +78,46 @@ def generate_text():
 def health_check():
     return jsonify({'status': 'healthy'})
 
-def predict_sync(file_bytes, top_k=3):
-    """Hàm chạy dự đoán đồng bộ trong thread executor."""
-    results = predict_image_bytes(model, device, file_bytes, CLASS_NAMES, top_k)
-    top = results[0]
-    predicted_label = top["label"]
-    confidence = top["score"]
-    guide = DISEASE_GUIDE.get(predicted_label, None)
+# def predict_sync(file_bytes, top_k=3):
+#     """Hàm chạy dự đoán đồng bộ trong thread executor."""
+#     results = predict_image_bytes(model, device, file_bytes, CLASS_NAMES, top_k)
+#     top = results[0]
+#     predicted_label = top["label"]
+#     confidence = top["score"]
+#     guide = DISEASE_GUIDE.get(predicted_label, None)
 
-    return {
-        "predicted": predicted_label,
-        "confidence": confidence,
-        "alternatives": results,
-        "guide": guide
-    }
+#     return {
+#         "predicted": predicted_label,
+#         "confidence": confidence,
+#         "alternatives": results,
+#         "guide": guide
+#     }
 
-@app.route("/predict", methods=["POST"])
-def predict():
-    # Kiểm tra có file không
-    if "file" not in request.files:
-        return jsonify({"error": "No file provided"}), 400
+# @app.route("/predict", methods=["POST"])
+# def predict():
+#     # Kiểm tra có file không
+#     if "file" not in request.files:
+#         return jsonify({"error": "No file provided"}), 400
 
-    file = request.files["file"]
+#     file = request.files["file"]
 
-    # Kiểm tra đúng loại file ảnh
-    if not file.content_type.startswith("image/"):
-        return jsonify({"error": "File must be an image"}), 400
+#     # Kiểm tra đúng loại file ảnh
+#     if not file.content_type.startswith("image/"):
+#         return jsonify({"error": "File must be an image"}), 400
 
-    # Đọc nội dung ảnh
-    file_bytes = file.read()
+#     # Đọc nội dung ảnh
+#     file_bytes = file.read()
 
-    # Có thể lấy top_k từ query param, mặc định = 3
-    top_k = int(request.form.get("top_k", 3))
+#     # Có thể lấy top_k từ query param, mặc định = 3
+#     top_k = int(request.form.get("top_k", 3))
 
-    # Dự đoán trong thread riêng (để không block Flask main thread)
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    future = loop.run_in_executor(executor, predict_sync, file_bytes, top_k)
-    result = loop.run_until_complete(future)
+#     # Dự đoán trong thread riêng (để không block Flask main thread)
+#     loop = asyncio.new_event_loop()
+#     asyncio.set_event_loop(loop)
+#     future = loop.run_in_executor(executor, predict_sync, file_bytes, top_k)
+#     result = loop.run_until_complete(future)
 
-    return jsonify(result)
+#     return jsonify(result)
 
 
 if __name__ == '__main__':
