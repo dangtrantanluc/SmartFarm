@@ -30,5 +30,4 @@
             ContentTemplate="{DataTemplate views:AccountPage}" />
         
     </TabBar>
->>>>>>> origin/main
 </Shell>
