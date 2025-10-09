@@ -3,12 +3,31 @@
     x:Class="SmartFarm.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:SmartFarm"
+    xmlns:views="clr-namespace:SmartFarm.Views"
     Title="SmartFarm">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <!-- Thanh điều hướng dưới cùng (Bottom Tab Bar) -->
+    <TabBar>
 
+        <ShellContent
+            Icon="home.png"
+            Route="HomePage"
+            ContentTemplate="{DataTemplate views:MainPage}" />
+
+        <ShellContent
+            Icon="camera1.png"
+            Route="CameraPage"
+            ContentTemplate="{DataTemplate views:CameraPage}" />
+
+        <ShellContent
+            Icon="bell1.png"
+            Route="NotificationPage"
+            ContentTemplate="{DataTemplate views:NotificationPage}" />
+
+        <ShellContent
+            Icon="user1.png"
+            Route="AccountPage"
+            ContentTemplate="{DataTemplate views:AccountPage}" />
+        
+    </TabBar>
 </Shell>
