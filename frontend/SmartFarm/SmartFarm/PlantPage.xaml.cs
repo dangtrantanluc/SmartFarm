@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Microsoft.Maui.Controls.Shapes;
 using Microsoft.Maui.Devices;
 using Microsoft.Maui.Media;
 using Microsoft.Maui.Storage;
@@ -34,7 +35,7 @@ public partial class PlantPage : ContentPage
 
 
 
-        _httpClient.BaseAddress = new Uri("http://192.168.88.209:8000");
+        _httpClient.BaseAddress = new Uri("http://192.168.1.107:8000");
         _httpClient.Timeout = TimeSpan.FromSeconds(180);
 
     }
@@ -112,16 +113,15 @@ public partial class PlantPage : ContentPage
 
         using var form = new MultipartFormDataContent();
         using var content = new StreamContent(stream);
-        //content.Add(new StreamContent(stream), "file", photo.FileName ?? "image.jpg");  // Handle null FileName
 
         content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
-        form.Add(content, "file", Path.GetFileName(photo.FileName));
+        form.Add(content, "file", System.IO.Path.GetFileName(photo.FileName));
         // Thêm tham số top_k
         form.Add(new StringContent("3"), "top_k");
 
         try
         {
-            // Gửi request tới astAPI
+            // Gửi request tới FastAPI
             var resp = await _httpClient.PostAsync("/plant/predict", form);
             resp.EnsureSuccessStatusCode();
 
@@ -135,29 +135,163 @@ public partial class PlantPage : ContentPage
 
                 var result = JsonSerializer.Deserialize<DiseaseResp>(json, options);
 
-                var predictLabel = result.predicted_label;
+                var predictLabel = result.predicted;
                 var confidence = result.confidence;
-                if (result.alternatives != null && result.alternatives.Count > 0)
+                MainResult.Children.Clear();
+
+                var newResultFrame = new Border
                 {
-                    foreach (var p in result.alternatives)
+                    StrokeShape = new RoundRectangle
                     {
-
+                        CornerRadius = new CornerRadius(15)
+                    },
+                    Background = new SolidColorBrush(Color.FromArgb("#E8F5E9")),
+                    Padding = 15,
+                    Shadow = new Shadow
+                    {
+                        Brush = new SolidColorBrush(Colors.Gray),
+                        Opacity = 0.5f,     // Độ mờ của bóng
+                        Offset = new Point(5, 5), // Vị trí bóng (ngang, dọc)
+                        Radius = 10         // Độ tán của bóng
+                    },
+                    Content = new VerticalStackLayout
+                    {
+                        Spacing = 8,
+                        Children =
+                        {
+                            new Label{Text="🌿 Kết quả dự đoán", FontSize=22, FontAttributes=FontAttributes.Bold, TextColor=Color.FromArgb("#2E7D32")},
+                            new Label{Text=$"Tên bệnh: {predictLabel}", FontSize=20, FontAttributes=FontAttributes.Bold, TextColor=Color.FromArgb("#1B5E20")},
+                            new Label{Text =$"Độ chính xác: {confidence}", FontSize = 20, FontAttributes = FontAttributes.Bold, TextColor = Color.FromArgb("#388E3C")}
+                        }
                     }
-                } 
-                if(result.guide != null)
-                {
+                };
 
+                MainResult.Children.Add(newResultFrame);
+                if (result.guide != null)
+                {
+                    var newGuideFrame = new Border
+                    {
+                        StrokeShape = new RoundRectangle
+                        {
+                            CornerRadius = new CornerRadius(15)
+                        },
+                        Background = new SolidColorBrush(Color.FromArgb("#FFF3E0")),
+                        Padding = 15,
+                        Shadow = new Shadow
+                        {
+                            Brush = new SolidColorBrush(Colors.Gray),
+                            Opacity = 0.5f,     // Độ mờ của bóng
+                            Offset = new Point(5, 5), // Vị trí bóng (ngang, dọc)
+                            Radius = 10         // Độ tán của bóng
+                        },
+                        Content = new VerticalStackLayout
+                        {
+                            Spacing = 10,
+                            Children =
+                            {
+                                new Label{Text="📖 Hướng dẫn chăm sóc và trị bệnh", FontSize=20, FontAttributes=FontAttributes.Bold, TextColor=Color.FromArgb("#E65100")},
+                                new Label{Text=$"Cây trồng: {result.guide.plant}", FontAttributes=FontAttributes.Bold, TextColor=Color.FromArgb("#BF360C")},
+                                new Label{Text=$"• Dấu hiệu: {result.guide.symptoms}", TextColor=Color.FromArgb("#000000")},
+                                new Label{Text=$"• Phòng ngừa: {result.guide.prevention}", TextColor=Color.FromArgb("#000000")},
+                                new Label{Text=$"• Cách trị: {result.guide.treatment}", TextColor=Color.FromArgb("#000000")},
+                            }
+                        }
+                    };
+                    MainResult.Children.Add(newGuideFrame);
                 }
 
+                if (result.alternatives != null && result.alternatives.Count > 0)
+                {
+                    var alternativeCollection = new CollectionView
+                    {
+                        ItemsLayout = new LinearItemsLayout(ItemsLayoutOrientation.Vertical),
+                        ItemTemplate = new DataTemplate(() =>
+                        {
+                            var frame = new Border
+                            {
+                                StrokeShape = new RoundRectangle
+                                {
+                                    CornerRadius = new CornerRadius(10)
+                                },
+                                Background = new SolidColorBrush(Color.FromArgb("#FFFFFF")),
+                                Padding = 10,
+                                Margin = 0.5,
+                                Shadow = new Shadow
+                                {
+                                    Brush = new SolidColorBrush(Colors.Gray),
+                                    Opacity = 0.5f,     // Độ mờ của bóng
+                                    Offset = new Point(5, 5), // Vị trí bóng (ngang, dọc)
+                                    Radius = 10         // Độ tán của bóng
+                                }
+                            };
+                            var grid = new Grid
+                            {
+                                ColumnDefinitions = new ColumnDefinitionCollection
+                                            {
+                                                new ColumnDefinition { Width = GridLength.Star }, // *
+                                                new ColumnDefinition { Width = GridLength.Auto }  // Auto
+                                            }
+                            };
+
+                            var nameLabel = new Label
+                            {
+                                FontSize = 16,
+                                FontAttributes = FontAttributes.Bold,
+                                TextColor = Color.FromArgb("#1565C0")
+                            };
+                            nameLabel.SetBinding(Label.TextProperty, "label");
+
+                            var scoreLabel = new Label
+                            {
+                                FontSize = 16,
+                                FontAttributes = FontAttributes.Bold,
+                                TextColor = Color.FromArgb("#0D47A1")
+                            };
+                            scoreLabel.SetBinding(Label.TextProperty, new Binding("score", stringFormat: "{0:P2}"));
+                            Grid.SetColumn(scoreLabel, 1);
+
+
+                            //Thêm vào grid
+                            grid.Add(nameLabel);
+                            grid.Add(scoreLabel);
+
+                            //Gắn grid vào frame    
+                            frame.Content = grid;
+
+                            return frame;
+                        })
+                    };
+                    alternativeCollection.ItemsSource = result.alternatives;
+
+                    var alternativeLabel = new Label { Text = "🔍 Các khả năng khác", FontSize = 20, FontAttributes = FontAttributes.Bold, TextColor = Color.FromArgb("#0D47A1"), Margin = new Thickness(0, 0, 0, 10) };
+
+                    var temp = new VerticalStackLayout { };
+                    temp.Children.Add(alternativeLabel);
+                    temp.Children.Add(alternativeCollection);
+
+                    var newAlternativesFrame = new Border
+                    {
+                        StrokeShape = new RoundRectangle
+                        {
+                            CornerRadius = new CornerRadius(15)
+                        },
+                        Background = new SolidColorBrush(Color.FromArgb("#E3F2FD")),
+                        Padding = 15
+                    };
+
+                    newAlternativesFrame.Content = temp;
+
+                    MainResult.Children.Add(newAlternativesFrame);
+                }
             }
             else
             {
-                
+
             }
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Looix", ex.ToString(), "OK");
+            await DisplayAlert("Lỗi", ex.ToString(), "OK");
         }
     }
 
@@ -165,7 +299,7 @@ public partial class PlantPage : ContentPage
     {
         using var client = new HttpClient();
 
-     
+
     }
 }
 
@@ -173,16 +307,16 @@ public partial class PlantPage : ContentPage
 
 public class DiseaseResp
 {
-    public string? predicted_label { get; set; } // Tên loại bệnh
-    public string? confidence { get; set; } // độ chính xác
+    public string? predicted { get; set; } // Tên loại bệnh
+    public double? confidence { get; set; } // độ chính xác
     public List<Alternative>? alternatives { get; set; } // Những dự đoán có thể liên quan
     public Guide? guide { get; set; } // Dấu hiệu, phòng và trị bệnh cho loại bệnh được dự đoán.
 }
 public class Guide
 {
-    public string? plant {  get; set; } //Tên cây trồng
+    public string? plant { get; set; } //Tên cây trồng
     public string? symptoms { get; set; } // dấu hiệu của bệnh 
-    public string? prevention  { get; set; } //Phòng ngừa bệnh cho  cây
+    public string? prevention { get; set; } //Phòng ngừa bệnh cho  cây
     public string? treatment { get; set; } // Cách trị bệnh cho cây
 }
 
