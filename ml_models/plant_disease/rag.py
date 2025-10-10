@@ -89,5 +89,5 @@ def get_qa_chain(pdf_path: str):
     return rag_chain
 
 
-pdf_path = r"C:\Users\dttan\Downloads\computer-vision\CV-Bài 02 - Chương 1 - OpenCV-PyNum.pdf"
+pdf_path = r"C:\Users\KhanhDuy\Downloads\ML_2425_Huong dan viet bao cao project (1).pdf"
 rag_chain = get_qa_chain(pdf_path)

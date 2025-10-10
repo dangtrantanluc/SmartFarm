@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="SmartFarm.PlantPage"
+             NavigationPage.HasNavigationBar="False">
+	<Grid>
+		<!-- Ảnh nền -->
+		<Image Source="bg_predict.png"
+           Aspect="AspectFill"
+           ZIndex="-1"
+           x:Name="bgPredict"/>
+
+		<ScrollView>
+			<VerticalStackLayout 
+                Padding="30" 
+                Spacing="20" 
+                HorizontalOptions="Center"
+                >
+
+				<Label
+                    x:Name="titlePage"
+                    Text="Nhận diện bệnh"
+                    FontSize="28"
+                    FontAttributes="Bold"
+                    BackgroundColor="Transparent"
+                    HorizontalTextAlignment="Center"
+                    />
+
+				<Frame x:Name ="frameTakePicture"
+                    HasShadow="True" 
+                    CornerRadius="10"
+                    Padding="10" 
+                    BackgroundColor="White">
+
+
+					<VerticalStackLayout Spacing="10">
+
+						<!-- Thêm Grid để chồng Button X lên Image -->
+						<Grid HeightRequest="250"  
+                            Margin="0,10,0,0">
+							<Image x:Name="SelectedImage"
+                                            Aspect="AspectFit"  
+                                            BackgroundColor="#E0E0E0"
+                                            HorizontalOptions="Fill"
+                                            VerticalOptions="Fill"/>
+
+							<!-- Button X ở góc phải trên -->
+							<Button x:Name="ClearButton"
+                                            Text="X"
+                                            Clicked="OnClearClicked"
+                                            BackgroundColor="Red"
+                                            TextColor="White"
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            Padding="0"
+                                            WidthRequest="35"
+                                            HeightRequest="35"
+                                            CornerRadius="15"
+                                            HorizontalOptions="End"  
+                                            VerticalOptions="Start"  
+                                            IsVisible="False"
+                                            ZIndex="2"/>
+							<!--!Ẩn -->
+						</Grid>
+
+						<Button Text="Chụp ảnh"
+                                Clicked="OnCameraClicked"
+                                BackgroundColor="#4285F4"
+                                TextColor="White"
+                                CornerRadius="8"/>
+						        <Button Text="Chọn ảnh từ thư viện"
+                                Clicked="OnPickImageClicked"
+                                BackgroundColor="#34A853"
+                                TextColor="White"
+                                CornerRadius="8"/>
+
+						<Button Text="Tìm kiếm"
+                                Clicked="OnUploadClicked"
+                                BackgroundColor="#FBBC05"
+                                TextColor="Black"
+                                CornerRadius="8"/>
+					</VerticalStackLayout>
+				</Frame>
+
+				<Frame
+                    x:Name="predictResult"
+                    BackgroundColor="White"
+                    CornerRadius="20"
+                    BorderColor="#4CAF50"
+                    Margin="20"
+                    Padding="15"
+                    HasShadow="True">
+
+					<VerticalStackLayout Spacing="10">
+						<Label Text="KẾT QUẢ NHẬN DIỆN" FontSize="20" FontAttributes="Bold" TextColor="#388E3C" HorizontalOptions="Center"/>
+
+						<VerticalStackLayout 
+							x:Name="MainResult"
+							Spacing="20">
+
+							<!-- Kết quả chính --><!--
+							<Frame CornerRadius="15"
+                                   HasShadow="True"
+                                   Padding="15"
+                                   BackgroundColor="#E8F5E9">
+
+								<VerticalStackLayout Spacing="8">
+									<Label Text="🌿 Kết quả dự đoán"
+                                           FontSize="22"
+                                           FontAttributes="Bold"
+                                           TextColor="#2E7D32" />
+
+									<Label x:Name="PredictedLabel"
+                                           FontSize="20"
+                                           FontAttributes="Bold"
+                                           TextColor="#1B5E20"
+                                           Text="Tên bệnh" />
+
+									<Label x:Name="ConfidenceLabel"
+                                           FontSize="16"
+                                           TextColor="#388E3C"
+                                           Text="Độ chính xác: 95%" />
+								</VerticalStackLayout>
+							</Frame>
+
+							--><!-- Hướng dẫn phòng & trị bệnh --><!--
+							<Frame CornerRadius="15"
+                                   HasShadow="True"
+                                   Padding="15"
+                                   BackgroundColor="#FFF3E0">
+
+								<VerticalStackLayout Spacing="10">
+									<Label Text="📖 Hướng dẫn chăm sóc và trị bệnh"
+                                           FontSize="20"
+                                           FontAttributes="Bold"
+                                           TextColor="#E65100" />
+
+									<Label x:Name="PlantLabel"
+                                           Text="Cây trồng: Cà chua"
+                                           FontAttributes="Bold"
+                                           TextColor="#BF360C" />
+
+
+									<Label 
+										   x:Name="SymptomInfoLabel"
+                                           Text="• Dấu hiệu: "
+										   FontAttributes="Bold"
+                                           TextColor="Black" />
+
+									<Label
+										   x:Name="PreventionInfoLabel"
+                                           Text="• Phòng ngừa: "
+                                           TextColor="Black" />
+
+									<Label 
+										   x:Name="TreatmentInfoLabel"
+                                           Text="• Cách trị: "
+                                           TextColor="Black" />
+								</VerticalStackLayout>
+							</Frame>
+
+							--><!-- Dự đoán thay thế --><!--
+							<Frame CornerRadius="15"
+                                   HasShadow="True"
+                                   Padding="15"
+                                   BackgroundColor="#E3F2FD">
+
+								<VerticalStackLayout>
+									<Label Text="🔍 Các khả năng khác"
+                                           FontSize="20"
+                                           FontAttributes="Bold"
+                                           TextColor="#0D47A1"
+                                           Margin="0,0,0,10" />
+
+									--><!-- Danh sách các alternatives --><!--
+									<CollectionView x:Name="AlternativeList"
+                                                    ItemsLayout="VerticalList">
+										<CollectionView.ItemTemplate>
+											<DataTemplate>
+												<Frame BackgroundColor="#FFFFFF"
+                                                       CornerRadius="10"
+                                                       Margin="0,5"
+                                                       Padding="10"
+                                                       HasShadow="True">
+													<Grid ColumnDefinitions="*,Auto">
+														<Label Text="{Binding label}"
+                                                               FontSize="16"
+                                                               FontAttributes="Bold"
+                                                               TextColor="#1565C0" />
+														<Label Text="{Binding score, StringFormat='{}{0:P2}'}"
+                                                               FontSize="14"
+                                                               Grid.Column="1"
+                                                               TextColor="#0D47A1" />
+													</Grid>
+												</Frame>
+											</DataTemplate>
+										</CollectionView.ItemTemplate>
+									</CollectionView>
+								</VerticalStackLayout>
+							</Frame>-->
+						</VerticalStackLayout>
+					</VerticalStackLayout>
+				</Frame>
+			</VerticalStackLayout>
+		</ScrollView>
+	</Grid>
+</ContentPage>

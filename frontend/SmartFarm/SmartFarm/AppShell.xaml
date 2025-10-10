@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:views="clr-namespace:SmartFarm.Views"
+    xmlns:local="clr-namespace:SmartFarm"
     Title="SmartFarm">
 
     <!-- Thanh điều hướng dưới cùng (Bottom Tab Bar) -->
@@ -17,7 +18,7 @@
         <ShellContent
             Icon="camera1.png"
             Route="CameraPage"
-            ContentTemplate="{DataTemplate views:CameraPage}" />
+            ContentTemplate="{DataTemplate local:PlantPage}" />
 
         <ShellContent
             Icon="bell1.png"
