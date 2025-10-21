@@ -29,22 +29,12 @@ rag_prompt = ChatPromptTemplate.from_messages([
 ])
 
 
-tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-small")
-model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-small")
+tokenizer = AutoTokenizer.from_pretrained("TinyLlama/TinyLlama-1.1B-Chat-v1.0")
+model = AutoModelForCausalLM.from_pretrained("TinyLlama/TinyLlama-1.1B-Chat-v1.0")
 
 # Comment lại HuggingFace Pipeline để tránh lỗi
 #Tạo pipeline local với cấu hình an toàn
 print("Đang tải model ...")
-# pipe = pipeline(
-#     "text-generation",
-#     model=model,
-#     tokenizer=tokenizer,
-#     device="cuda",
-#     temperature=0.7,
-#     max_new_tokens=100,
-#     do_sample=True,
-#     truncation=True
-# ) 
 pipe = pipeline(
     "text2text-generation",
     model=model,
@@ -89,5 +79,5 @@ def get_qa_chain(pdf_path: str):
     return rag_chain
 
 
-pdf_path = r"C:\Users\dttan\Downloads\computer-vision\CV-Bài 02 - Chương 1 - OpenCV-PyNum.pdf"
+pdf_path = r"D:\cong-cu-theo-doi-hoat-dong-sx-lua-farmore.pdf"
 rag_chain = get_qa_chain(pdf_path)
