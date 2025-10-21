@@ -11,7 +11,7 @@ datasets>=2.20.0
 huggingface-hub>=0.24.0
 
 # --- LangChain Ecosystem ---
-langchain>=0.2.10
+langchain>=0.2.9
 langchain-community>=0.2.10
 langchain-core>=0.2.10
 langchain-huggingface>=0.0.3
