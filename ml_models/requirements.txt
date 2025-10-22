@@ -1,4 +1,4 @@
-fastapi
+1fastapi
 uvicorn[standard]
 torch       # hoặc torch-cuXX nếu dùng CUDA
 torchvision
