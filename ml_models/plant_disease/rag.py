@@ -18,7 +18,9 @@ import pandas as pd
 import json
 
 # Đăng nhập HuggingFace Hub (điền token của bạn vào)
-login(token="your token")
+HF_TOKEN='hf_your_real_token_here'
+
+login(token=HF_TOKEN)
 print("Logged in to HuggingFace Hub")
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
