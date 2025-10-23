@@ -12,3 +12,5 @@ pip install -r requirements.txt
 
 # Run backend
 fastapi backend/app/dev main.py --host 0.0.0.0 --port 8000
+
+fastapi dev backend/app/main.py --host 0.0.0.0 --port 8000
