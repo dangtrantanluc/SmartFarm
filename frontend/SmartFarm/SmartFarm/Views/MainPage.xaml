@@ -84,10 +84,17 @@
             </Grid>
 
             <!-- Nội dung khác bên dưới -->
-            <Label Text="Nội dung chính ở đây..."
-                   Margin="20,30"
-                   FontSize="18"
-                   TextColor="Black"/>
+            
+            <Label Text="📰 Tin tức Nông nghiệp mới nhất"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   TextColor="DarkGreen"
+                   HorizontalOptions="Center"
+                   Margin="0,10,0,20" />
+
+            <!-- Khu vực hiển thị bài báo -->
+            <StackLayout x:Name="NewsContainer"
+                         Margin="10,0,10,20" />
 
         </VerticalStackLayout>
     </ScrollView>
