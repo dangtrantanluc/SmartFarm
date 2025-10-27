@@ -14,6 +14,8 @@ public partial class PlantPage : ContentPage
     FileResult? photo;
     private readonly HttpClient _httpClient = new();
 
+    private bool isLoading;
+
     public PlantPage()
     {
         InitializeComponent();
@@ -34,10 +36,24 @@ public partial class PlantPage : ContentPage
         titlePage.WidthRequest = screenWidth;
 
 
-
-        _httpClient.BaseAddress = new Uri("http://192.168.1.107:8000");
+        _httpClient.BaseAddress = new Uri("http://172.16.17.184:8000");
         _httpClient.Timeout = TimeSpan.FromSeconds(180);
 
+
+        BindingContext = this; // ⚠️ Bắt buộc
+
+    }
+
+    public bool IsLoading
+    {
+        get => isLoading;
+        set
+        {
+            if (isLoading == value)
+                return;
+            isLoading = value;
+            OnPropertyChanged(nameof(IsLoading));
+        }
     }
 
     private async void OnCameraClicked(object sender, EventArgs e)
@@ -119,8 +135,10 @@ public partial class PlantPage : ContentPage
         // Thêm tham số top_k
         form.Add(new StringContent("3"), "top_k");
 
+
         try
         {
+            IsLoading = true;
             // Gửi request tới FastAPI
             var resp = await _httpClient.PostAsync("/plant/predict", form);
             resp.EnsureSuccessStatusCode();
@@ -292,6 +310,10 @@ public partial class PlantPage : ContentPage
         catch (Exception ex)
         {
             await DisplayAlert("Lỗi", ex.ToString(), "OK");
+        }
+        finally
+        {
+            IsLoading = false; 
         }
     }
 

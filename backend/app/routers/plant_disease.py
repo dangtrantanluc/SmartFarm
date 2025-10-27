@@ -5,6 +5,9 @@ from concurrent.futures import ThreadPoolExecutor
 import json
 # from ml_models.plant_disease import predict_disease
 from ml_models.plant_disease.model_plant_disease import load_model, predict_image_bytes
+from googletrans import Translator
+
+translator = Translator()
 
 # --- Cấu hình file ---
 MODEL_PATH = "ml_models/resnet50_plant_disease.pth"
@@ -51,14 +54,24 @@ async def predict(file: UploadFile = File(...), top_k: int = Form(3)):
     # Chạy hàm predict trong threadpool
     results = await loop.run_in_executor(executor, predict_image_bytes, model, device, contents, CLASS_NAMES, top_k)
 
-    top = results[0]
+    top = results.pop(0)
     predicted_label = top["label"]
     confidence = top["score"]
     guide = DISEASE_GUIDE.get(predicted_label, None)
 
+    predicted_label_vn = translator.translate(predicted_label, src='en', dest='vi').text
+
+    results_after_translate = []
+    for item in results:
+        label_vn = translator.translate(item["label"], src='en', dest='vi').text
+        score = item["score"]
+        results_after_translate.append({"label": label_vn, "score": float(score)})
+        
+    
+    
     return {
-        "predicted": predicted_label,
+        "predicted": predicted_label_vn,
         "confidence": confidence,
-        "alternatives": results,
+        "alternatives": results_after_translate,
         "guide": guide
     }
