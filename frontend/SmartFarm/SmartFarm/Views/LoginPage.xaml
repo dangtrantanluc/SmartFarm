@@ -4,25 +4,31 @@
              x:Class="SmartFarm.Views.LoginPage"
              BackgroundColor="#f0f8ff">
 
-	<Grid>
-		<!-- Lớp nền trắng -->
-		<BoxView Color="White" />
-
-		<Image Source="bg_login.png"
+    <Grid>
+        <Image Source="bg_login.png"
 					   Aspect="AspectFill"
-					   InputTransparent="True" />
+					   InputTransparent="True"
+					   />
+        
+        <BoxView>
+            <BoxView.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#FFFFFF" Offset="0.1" />
+                    <GradientStop Color="#00000066" Offset="0.8" />
+                    <GradientStop Color="#208868" Offset="1.0" />
+                </LinearGradientBrush>
+            </BoxView.Background>
+        </BoxView>
 
-		<BoxView Color="Black" Opacity="0.4" InputTransparent="True" />
-
-		<ScrollView>
+        <ScrollView>
 			<VerticalStackLayout Padding="30" Spacing="25" VerticalOptions="Center" HorizontalOptions="Center">
 
 				<!-- Logo ứng dụng -->
-				<Border BackgroundColor="#ffffff"
+                <Border BackgroundColor="#ffffff"
 						 WidthRequest="120" HeightRequest="120"
 						 Padding="20"
 						 HorizontalOptions="Center">
-					<Border.StrokeShape>
+                    <Border.StrokeShape>
 						<RoundRectangle CornerRadius="80" />
 					</Border.StrokeShape>
 					<Image Source="weather_leaf.png"
@@ -34,7 +40,7 @@
 				<Label Text="Đăng nhập"
 					   FontSize="26"
 					   FontAttributes="Bold"
-					   TextColor="White"
+					   TextColor="#208868"
 					   HorizontalOptions="Center"/>
 
 				<!-- Thẻ chứa nội dung -->

@@ -5,14 +5,19 @@
              BackgroundColor="#f0f8ff">
 
 	<Grid>
-		<!-- Lớp nền trắng -->
-        <BoxView Color="White" />
-
         <Image Source="bg_login.png"
 			   Aspect="AspectFill"
-			   InputTransparent="True" />
-
-        <BoxView Color="Black" Opacity="0.4" InputTransparent="True" />
+			   InputTransparent="True"
+			   />
+        <BoxView>
+            <BoxView.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#FFFFFF" Offset="0.1" />
+                    <GradientStop Color="#00000066" Offset="0.8" />
+                    <GradientStop Color="#208868" Offset="1.0" />
+                </LinearGradientBrush>
+            </BoxView.Background>
+        </BoxView>
 
         <ScrollView>
 			<VerticalStackLayout Padding="30" Spacing="25" VerticalOptions="Center" HorizontalOptions="Center">
@@ -34,7 +39,7 @@
 				<Label Text="Đăng ký tài khoản"
 					   FontSize="26"
 					   FontAttributes="Bold"
-					   TextColor="White"
+					   TextColor="#208868"
 					   HorizontalOptions="Center"/>
 
 				<!-- Card container -->

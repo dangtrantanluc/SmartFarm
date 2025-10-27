@@ -32,7 +32,6 @@
                         Padding="10" 
                         BackgroundColor="White"
                         Margin="0,10,0,0"
-                        HeightRequest="500"
                         HorizontalOptions="Fill">
 					<Border.Shadow>
 						<Shadow Brush="Gray" Opacity="0.5" Radius="10" />
@@ -41,7 +40,7 @@
 						<RoundRectangle CornerRadius="10" />
 					</Border.StrokeShape>
                     
-					<VerticalStackLayout Spacing="15">
+					<VerticalStackLayout Spacing="10">
 
 						<!-- Thêm Grid để chồng Button X lên Image -->
                         <Grid HeightRequest="250">
@@ -70,7 +69,7 @@
                         </Grid>
 
                         <VerticalStackLayout 
-                                Spacing="10"
+                                Spacing="5"
                                 HorizontalOptions="Fill"
                                 VerticalOptions="Center">
 
@@ -79,7 +78,7 @@
 									BackgroundColor="#4285F4"
 									TextColor="White"
                                     CornerRadius="10"
-                                    HeightRequest="50"
+                                    HeightRequest="40"
                                     HorizontalOptions="Fill"
                                />
 
@@ -88,7 +87,7 @@
 							        BackgroundColor="#34A853"
 							        TextColor="White"
                                     CornerRadius="10"
-                                    HeightRequest="50"
+                                    HeightRequest="40"
                                     HorizontalOptions="Fill"
                                />
 
@@ -98,7 +97,7 @@
 									BackgroundColor="#FBBC05"
 									TextColor="White"
                                     CornerRadius="10"
-                                    HeightRequest="50"
+                                    HeightRequest="40"
                                     HorizontalOptions="Fill"
                                />
                         </VerticalStackLayout>
