@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartFarm.Views.LoginPage"
+             BackgroundColor="#f0f8ff">
+
+	<Grid>
+		<!-- Lớp nền trắng -->
+		<BoxView Color="White" />
+
+		<Image Source="bg_login.png"
+					   Aspect="AspectFill"
+					   InputTransparent="True" />
+
+		<BoxView Color="Black" Opacity="0.4" InputTransparent="True" />
+
+		<ScrollView>
+			<VerticalStackLayout Padding="30" Spacing="25" VerticalOptions="Center" HorizontalOptions="Center">
+
+				<!-- Logo ứng dụng -->
+				<Border BackgroundColor="#ffffff"
+						 WidthRequest="120" HeightRequest="120"
+						 Padding="20"
+						 HorizontalOptions="Center">
+					<Border.StrokeShape>
+						<RoundRectangle CornerRadius="80" />
+					</Border.StrokeShape>
+					<Image Source="weather_leaf.png"
+                           WidthRequest="79" HeightRequest="79"
+						   Aspect="AspectFit"/>
+				</Border>
+
+				<!-- Tiêu đề -->
+				<Label Text="Đăng nhập"
+					   FontSize="26"
+					   FontAttributes="Bold"
+					   TextColor="White"
+					   HorizontalOptions="Center"/>
+
+				<!-- Thẻ chứa nội dung -->
+				<Border BackgroundColor="White"
+						 Padding="25"
+						 StrokeThickness="1"
+						 WidthRequest="320"
+					 >
+					<Border.StrokeShape>
+						<RoundRectangle CornerRadius="20" />
+					</Border.StrokeShape>
+
+					<VerticalStackLayout Spacing="15">
+
+						<Border
+							   BackgroundColor="#f7f7f7"
+							   Padding="0"
+							   Margin="0,5">
+							<Border.StrokeShape>
+								<RoundRectangle CornerRadius="10" />
+							</Border.StrokeShape>
+							<Entry x:Name="UsernameEntry"
+								   Placeholder="Email"
+								   PlaceholderColor="#999"
+								   TextColor="#333"
+								   ClearButtonVisibility="WhileEditing"
+								   Keyboard="Text"
+								   HeightRequest="45"/>
+						</Border>
+
+						<Border
+							   BackgroundColor="#f7f7f7"
+							   Padding="0"
+							   Margin="0,5">
+							<Border.StrokeShape>
+								<RoundRectangle CornerRadius="10" />
+							</Border.StrokeShape>
+							<Entry x:Name="PasswordEntry"
+								   Placeholder="Mật khẩu"
+								   IsPassword="True"
+								   PlaceholderColor="#999"
+								   TextColor="#333"
+								   ClearButtonVisibility="WhileEditing"
+								   HeightRequest="45"/>
+						</Border>
+
+						<!-- Nút đăng nhập -->
+						<Border StrokeThickness="0">
+							<Border.StrokeShape>
+								<RoundRectangle CornerRadius="25" />
+							</Border.StrokeShape>
+							<Button Text="Đăng nhập"
+									Clicked="OnLoginClicked"
+									BackgroundColor="#56AB2F"
+									TextColor="White"
+									FontAttributes="Bold"
+									HeightRequest="45"
+                            />
+						</Border>
+						<!-- Quên mật khẩu -->
+						<Button Text="Quên mật khẩu?"
+								BackgroundColor="Transparent"
+								TextColor="#56AB2F"
+								FontAttributes="Italic"
+								FontSize="12"
+								HorizontalOptions="End"
+								/>
+
+						<!-- Chuyển sang đăng ký -->
+                        <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="5" Margin="0,10,0,0">
+                            <Label Text="Chưa có tài khoản?"
+								   TextColor="#666"
+                                   FontSize="12"
+                                   VerticalOptions="Center"/>
+							<Button Text="Đăng ký ngay"
+									Clicked="OnRegisterRedirect"
+									BackgroundColor="Transparent"
+									TextColor="#56AB2F"
+                                    FontSize="12"
+									FontAttributes="Bold"
+									Padding="0"
+                                    VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+				</Border>
+			</VerticalStackLayout>
+		</ScrollView>
+	</Grid>
+</ContentPage>
