@@ -266,10 +266,19 @@ public partial class MainPage : ContentPage
     // RSS Dân Việt (feed tổng)
     private const string RssFallbackUrl = "https://danviet.vn/dv-tin-tuc.rss";
 
+    private readonly WeatherViewModel _viewModel;
+
+
     public MainPage()
     {
         InitializeComponent();
         _ = LoadNewsAsync();
+        _viewModel = new WeatherViewModel();
+        BindingContext = _viewModel;
+
+        // Goi api khi khoi dong trang
+        _ = _viewModel.LoadWeatherAsync();
+
     }
 
     private async Task LoadNewsAsync()
