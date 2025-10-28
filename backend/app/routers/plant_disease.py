@@ -54,24 +54,25 @@ async def predict(file: UploadFile = File(...), top_k: int = Form(3)):
     # Chạy hàm predict trong threadpool
     results = await loop.run_in_executor(executor, predict_image_bytes, model, device, contents, CLASS_NAMES, top_k)
 
-    top = results.pop(0)
+    top = results[0]
     predicted_label = top["label"]
     confidence = top["score"]
     guide = DISEASE_GUIDE.get(predicted_label, None)
 
     predicted_label_vn = translator.translate(predicted_label, src='en', dest='vi').text
 
-    results_after_translate = []
+    alternatives = []
     for item in results:
+        altGuide = DISEASE_GUIDE.get(item["label"])
         label_vn = translator.translate(item["label"], src='en', dest='vi').text
         score = item["score"]
-        results_after_translate.append({"label": label_vn, "score": float(score)})
+        alternatives.append({"label": label_vn,"guide": altGuide, "score": float(score)})
         
     
     
     return {
         "predicted": predicted_label_vn,
         "confidence": confidence,
-        "alternatives": results_after_translate,
+        "alternatives": alternatives,
         "guide": guide
     }
