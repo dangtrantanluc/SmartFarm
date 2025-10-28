@@ -1,5 +1,8 @@
 from langchain_community.document_loaders import PyPDFLoader
-from langchain.text_splitter import CharacterTextSplitter
+from langchain_text_splitters import CharacterTextSplitter
+
+# from langchain_text_splitters import RecursiveCharacterTextSplitter
+
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings, HuggingFaceEndpoint
 from langchain_core.prompts import ChatPromptTemplate
@@ -89,5 +92,8 @@ def get_qa_chain(pdf_path: str):
     return rag_chain
 
 
+# pdf_path = r"C:/Users/Admin/Downloads/S.pdf"
+
 pdf_path = r"D:/ki1nam4/Testing/22130038_NguyenThiNgocDiem.pdf"
+
 rag_chain = get_qa_chain(pdf_path)
