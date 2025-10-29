@@ -92,5 +92,7 @@ def get_qa_chain(pdf_path: str):
     return rag_chain
 
 
+
 pdf_path = r"C:\Users\KhanhDuy\Downloads\ÔN TẬP QUẢN TRỊ MẠNG 1 - de on quan tri mang.pdf"
+
 rag_chain = get_qa_chain(pdf_path)

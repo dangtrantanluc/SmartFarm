@@ -16,14 +16,15 @@
             ContentTemplate="{DataTemplate views:MainPage}" />
 
         <ShellContent
+            Icon="post.png"
+            Route="TakeNotePage"
+            ContentTemplate="{DataTemplate views:TakeNotePage}" />
+
+        <ShellContent
             Icon="camera1.png"
             Route="CameraPage"
             ContentTemplate="{DataTemplate local:PlantPage}" />
 
-        <ShellContent
-            Icon="bell1.png"
-            Route="NotificationPage"
-            ContentTemplate="{DataTemplate views:NotificationPage}" />
 
         <ShellContent
             Icon="user1.png"
