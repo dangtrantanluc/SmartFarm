@@ -41,7 +41,11 @@ __pycache__/
 .venv/
 env/
 venv/
+# Environment variables
+*.env
+
 ENV/
+backend/source/
 
 # =========================
 # Data / ML models
@@ -66,3 +70,7 @@ ml_models/resnet50_plant_disease.pth
 Thumbs.db
 
 .fake
+
+# Log files
+*.log
+logs/

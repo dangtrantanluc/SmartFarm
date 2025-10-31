@@ -22,6 +22,9 @@
     <!-- Thanh điều hướng dưới cùng (Bottom Tab Bar) -->
     <TabBar>
 
+    <!-- Thanh điều hướng dưới cùng (Bottom Tab Bar) -->
+    <TabBar>
+
         <ShellContent
             Icon="home.png"
             Route="HomePage"
@@ -37,6 +40,15 @@
             Icon="bell1.png"
             Route="NotificationPage"
             ContentTemplate="{DataTemplate views:NotificationPage}" />
+            Icon="post.png"
+            Route="TakeNotePage"
+            ContentTemplate="{DataTemplate views:TakeNotePage}" />
+
+        <ShellContent
+            Icon="camera1.png"
+            Route="CameraPage"
+            ContentTemplate="{DataTemplate local:PlantPage}" />
+
 
         <ShellContent
             Icon="user1.png"

@@ -88,7 +88,10 @@
 	  <MauiXaml Update="Views\MainPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+<!-- <<<<<<< HEAD
 	  <MauiXaml Update="Views\NotificationPage.xaml">
+======= -->
+	  <MauiXaml Update="Views\TakeNotePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
