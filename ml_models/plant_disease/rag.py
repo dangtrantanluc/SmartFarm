@@ -22,7 +22,7 @@ import pandas as pd
 import json
 
 # Đăng nhập HuggingFace Hub (điền token của bạn vào)
-HF_TOKEN='hf_your_real_token_here'
+HF_TOKEN='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'
 
 login(token=HF_TOKEN)
 print("Logged in to HuggingFace Hub")
