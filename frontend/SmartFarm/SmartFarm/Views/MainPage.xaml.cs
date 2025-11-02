@@ -251,7 +251,9 @@
 using System.Net.Http;
 using System.Text.Json;
 using System.Xml.Linq;
+using Plugin.Firebase.CloudMessaging;
 using System.Text.RegularExpressions;
+using SmartFarm.ViewModels;
 
 namespace SmartFarm.Views;
 

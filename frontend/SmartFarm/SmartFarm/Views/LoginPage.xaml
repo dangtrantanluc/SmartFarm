@@ -20,13 +20,14 @@
             </BoxView.Background>
         </BoxView>
 
-        <ScrollView>
-			<VerticalStackLayout Padding="30" Spacing="25" VerticalOptions="Center" HorizontalOptions="Center">
+        <ScrollView HorizontalOptions="Center" VerticalOptions="Center">
+			<VerticalStackLayout  Spacing="25" VerticalOptions="Center" HorizontalOptions="Center">
 
 				<!-- Logo ứng dụng -->
                 <Border BackgroundColor="#ffffff"
 						 WidthRequest="120" HeightRequest="120"
 						 Padding="20"
+						 Margin="30"
 						 HorizontalOptions="Center">
                     <Border.StrokeShape>
 						<RoundRectangle CornerRadius="80" />

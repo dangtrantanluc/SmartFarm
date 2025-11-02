@@ -35,7 +35,7 @@ namespace SmartFarm.Views
 
                 if (success)
                 {
-                    await DisplayAlert("Thành công", "Đăng nhập thành công!", "OK");
+                    //await DisplayAlert("Thành công", "Đăng nhập thành công!", "OK");
                     // Lưu uid để dùng sau
                     Preferences.Set("user_uid", uid);
                     // Điều hướng sang trang chính

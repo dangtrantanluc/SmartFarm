@@ -1,11 +1,18 @@
-﻿using System.Net.Http.Json;
-using System;
+﻿using System;
 using System.Net.Http;
+using System.Net.Http.Json;
+using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using FirebaseAdmin;
+using FirebaseAdmin.Messaging;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.Maui.Controls;
+using Newtonsoft.Json;
 using SmartFarm.Services;
-using Newtonsoft.Json;  
+using Plugin.Firebase.CloudMessaging;
+
 
 namespace SmartFarm.Views
 {
@@ -46,14 +53,20 @@ namespace SmartFarm.Views
                     return;
                 }
 
+
+
                 string uid = signupResult.localId;
                 string idToken = signupResult.idToken;
 
+                string fcm_token = await CrossFirebaseCloudMessaging.Current.GetTokenAsync();
+
+                Console.WriteLine("Firebase initialized successfully with device token is: " + fcm_token);
                 // Lưu thông tin user vào Firebase Database
-                await SaveUserToDatabase(uid, email.Split('@')[0], email, idToken);
+                await SaveUserToDatabase(uid, email.Split('@')[0], email, idToken, fcm_token);
 
                 await DisplayAlert("Thành công", "Đăng ký tài khoản thành công!", "OK");
 
+                
                 // Chuyển sang trang Login
                 await Navigation.PushAsync(new LoginPage());
             }
@@ -61,8 +74,10 @@ namespace SmartFarm.Views
             {
                 await DisplayAlert("Lỗi", ex.Message, "OK");
             }
-        }
 
+            
+        }
+    
         private async Task<dynamic> SignUpWithEmailPassword(string email, string password)
         {
             using (var client = new HttpClient())
@@ -91,7 +106,7 @@ namespace SmartFarm.Views
             }
         }
 
-        private async Task SaveUserToDatabase(string uid, string name, string email, string idToken)
+        private async Task SaveUserToDatabase(string uid, string name, string email, string idToken, string fcm_token)
         {
             using (var client = new HttpClient())
             {
@@ -100,6 +115,7 @@ namespace SmartFarm.Views
                     uId = uid,
                     name = name,
                     mail = email,
+                    fcm_token = fcm_token,
                     work_details = new { } // chưa có task nào
                 };
 
@@ -120,5 +136,7 @@ namespace SmartFarm.Views
         {
             await Navigation.PushAsync(new LoginPage());
         }
+
+    
     }
 }

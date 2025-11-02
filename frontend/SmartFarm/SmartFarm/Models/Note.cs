@@ -1,46 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Text.Json.Serialization;
 
-namespace SmartFarm.Models
+public class Note : INotifyPropertyChanged
 {
-    public class Note : INotifyPropertyChanged
+    [JsonPropertyName("userId")]
+    public string UserId { get; set; }
+
+    public string Key { get; set; }
+
+    private string _message;
+    [JsonPropertyName("message")]
+    public string Message
     {
-        private bool _isDone;
-        public bool IsDone
+        get => _message;
+        set
         {
-            get => _isDone;
-            set
+            if (_message != value)
             {
-                if (_isDone != value)
-                {
-                    _isDone = value;
-                    OnPropertyChanged(nameof(IsDone)); // Thông báo UI cập nhật
-                }
+                _message = value;
+                OnPropertyChanged(nameof(Message));
             }
         }
+    }
 
-        private string _content;
-        public string Content
+    private DateTime _timestamp;
+    [JsonPropertyName("timestamp")]
+    public DateTime TimeStamp
+    {
+        get => _timestamp;
+        set
         {
-            get => _content;
-            set
+            if (_timestamp != value)
             {
-                if (_content != value)
-                {
-                    _content = value;
-                    OnPropertyChanged(nameof(Content)); // Thông báo UI cập nhật
-                }
+                _timestamp = value;
+                OnPropertyChanged(nameof(TimeStamp));
+                OnPropertyChanged(nameof(TimeDisplay));
             }
         }
+    }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+    public string TimeDisplay => TimeStamp.ToString("HH:mm");
+
+    public event PropertyChangedEventHandler PropertyChanged;
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

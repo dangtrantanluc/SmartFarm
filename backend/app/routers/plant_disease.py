@@ -5,9 +5,7 @@ from concurrent.futures import ThreadPoolExecutor
 import json
 # from ml_models.plant_disease import predict_disease
 from ml_models.plant_disease.model_plant_disease import load_model, predict_image_bytes
-from googletrans import Translator
-
-translator = Translator()
+from deep_translator import GoogleTranslator
 
 # --- Cấu hình file ---
 MODEL_PATH = "ml_models/resnet50_plant_disease.pth"
@@ -59,12 +57,12 @@ async def predict(file: UploadFile = File(...), top_k: int = Form(3)):
     confidence = top["score"]
     guide = DISEASE_GUIDE.get(predicted_label, None)
 
-    predicted_label_vn = translator.translate(predicted_label, src='en', dest='vi').text
+    predicted_label_vn = GoogleTranslator(source='en', dest='vi').translate(predicted_label)
 
     alternatives = []
     for item in results:
         altGuide = DISEASE_GUIDE.get(item["label"])
-        label_vn = translator.translate(item["label"], src='en', dest='vi').text
+        label_vn = GoogleTranslator(source='en', dest='vi').translate(item["label"])
         score = item["score"]
         alternatives.append({"label": label_vn,"guide": altGuide, "score": float(score)})
         
