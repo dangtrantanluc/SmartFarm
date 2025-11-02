@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using SmartFarm.Models;
 using SmartFarm.Services;
-using static SmartFarm.Effects.TouchEffect;
 namespace SmartFarm.Views;
 
 public partial class TakeNotePage : ContentPage

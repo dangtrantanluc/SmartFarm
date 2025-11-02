@@ -37,7 +37,7 @@ public partial class PlantPage : ContentPage
 
         titlePage.WidthRequest = screenWidth;
 
-        _httpClient.BaseAddress = new Uri("http://192.168.88.51:8000");
+        _httpClient.BaseAddress = new Uri("http://192.168.1.110:8000");
         _httpClient.Timeout = TimeSpan.FromSeconds(180);
 
 
