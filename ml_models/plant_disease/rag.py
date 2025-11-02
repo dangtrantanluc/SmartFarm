@@ -92,8 +92,7 @@ def get_qa_chain(pdf_path: str):
     return rag_chain
 
 
-# pdf_path = r"C:/Users/Admin/Downloads/S.pdf"
 
-pdf_path = r"D:/ki1nam4/Testing/22130038_NguyenThiNgocDiem.pdf"
+pdf_path = r"C:\Users\KhanhDuy\Downloads\ÔN TẬP QUẢN TRỊ MẠNG 1 - de on quan tri mang.pdf"
 
 rag_chain = get_qa_chain(pdf_path)

@@ -3,6 +3,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
+using CommunityToolkit.Maui.Core.Views;
+using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Shapes;
 using Microsoft.Maui.Devices;
 using Microsoft.Maui.Media;
@@ -13,6 +15,8 @@ public partial class PlantPage : ContentPage
 {
     FileResult? photo;
     private readonly HttpClient _httpClient = new();
+
+    private bool isLoading;
 
     public PlantPage()
     {
@@ -33,11 +37,24 @@ public partial class PlantPage : ContentPage
 
         titlePage.WidthRequest = screenWidth;
 
-
-
-        _httpClient.BaseAddress = new Uri("http://192.168.1.107:8000");
+        _httpClient.BaseAddress = new Uri("http://192.168.1.110:8000");
         _httpClient.Timeout = TimeSpan.FromSeconds(180);
 
+
+        BindingContext = this; // ⚠️ Bắt buộc
+
+    }
+
+    public bool IsLoading
+    {
+        get => isLoading;
+        set
+        {
+            if (isLoading == value)
+                return;
+            isLoading = value;
+            OnPropertyChanged(nameof(IsLoading));
+        }
     }
 
     private async void OnCameraClicked(object sender, EventArgs e)
@@ -119,8 +136,10 @@ public partial class PlantPage : ContentPage
         // Thêm tham số top_k
         form.Add(new StringContent("3"), "top_k");
 
+
         try
         {
+            IsLoading = true;
             // Gửi request tới FastAPI
             var resp = await _httpClient.PostAsync("/plant/predict", form);
             resp.EnsureSuccessStatusCode();
@@ -138,6 +157,10 @@ public partial class PlantPage : ContentPage
                 var predictLabel = result.predicted;
                 var confidence = result.confidence;
                 MainResult.Children.Clear();
+
+
+                Label diseaseNameLb = new Label { Text = $"Tên bệnh: {predictLabel}", FontSize = 20, FontAttributes = FontAttributes.Bold, TextColor = Color.FromArgb("#1B5E20") };
+                Label predictScoreLb = new Label { Text = $"Độ chính xác: {confidence}", FontSize = 20, FontAttributes = FontAttributes.Bold, TextColor = Color.FromArgb("#388E3C") };
 
                 var newResultFrame = new Border
                 {
@@ -160,45 +183,59 @@ public partial class PlantPage : ContentPage
                         Children =
                         {
                             new Label{Text="🌿 Kết quả dự đoán", FontSize=22, FontAttributes=FontAttributes.Bold, TextColor=Color.FromArgb("#2E7D32")},
-                            new Label{Text=$"Tên bệnh: {predictLabel}", FontSize=20, FontAttributes=FontAttributes.Bold, TextColor=Color.FromArgb("#1B5E20")},
-                            new Label{Text =$"Độ chính xác: {confidence}", FontSize = 20, FontAttributes = FontAttributes.Bold, TextColor = Color.FromArgb("#388E3C")}
+                            diseaseNameLb,
+                            predictScoreLb,
                         }
                     }
                 };
 
+                Label plantLb;
+                Label symtomsLb;
+                Label preventionLb;
+                Label treatmentLb;
                 MainResult.Children.Add(newResultFrame);
+                var newGuide = new VerticalStackLayout
+                {
+                    Spacing = 10
+                };
+                var newGuideFrame = new Border
+                {
+                    StrokeShape = new RoundRectangle
+                    {
+                        CornerRadius = new CornerRadius(15)
+                    },
+                    Background = new SolidColorBrush(Color.FromArgb("#FFF3E0")),
+                    Padding = 15,
+                    Shadow = new Shadow
+                    {
+                        Brush = new SolidColorBrush(Colors.Gray),
+                        Opacity = 0.5f,     // Độ mờ của bóng
+                        Offset = new Point(5, 5), // Vị trí bóng (ngang, dọc)
+                        Radius = 10         // Độ tán của bóng
+                    },
+                    Content = newGuide
+                };
+                newGuideFrame.IsVisible = false;
+                
+
                 if (result.guide != null)
                 {
-                    var newGuideFrame = new Border
-                    {
-                        StrokeShape = new RoundRectangle
-                        {
-                            CornerRadius = new CornerRadius(15)
-                        },
-                        Background = new SolidColorBrush(Color.FromArgb("#FFF3E0")),
-                        Padding = 15,
-                        Shadow = new Shadow
-                        {
-                            Brush = new SolidColorBrush(Colors.Gray),
-                            Opacity = 0.5f,     // Độ mờ của bóng
-                            Offset = new Point(5, 5), // Vị trí bóng (ngang, dọc)
-                            Radius = 10         // Độ tán của bóng
-                        },
-                        Content = new VerticalStackLayout
-                        {
-                            Spacing = 10,
-                            Children =
-                            {
-                                new Label{Text="📖 Hướng dẫn chăm sóc và trị bệnh", FontSize=20, FontAttributes=FontAttributes.Bold, TextColor=Color.FromArgb("#E65100")},
-                                new Label{Text=$"Cây trồng: {result.guide.plant}", FontAttributes=FontAttributes.Bold, TextColor=Color.FromArgb("#BF360C")},
-                                new Label{Text=$"• Dấu hiệu: {result.guide.symptoms}", TextColor=Color.FromArgb("#000000")},
-                                new Label{Text=$"• Phòng ngừa: {result.guide.prevention}", TextColor=Color.FromArgb("#000000")},
-                                new Label{Text=$"• Cách trị: {result.guide.treatment}", TextColor=Color.FromArgb("#000000")},
-                            }
-                        }
-                    };
-                    MainResult.Children.Add(newGuideFrame);
+                    newGuide.Children.Clear();
+                    newGuideFrame.IsVisible = true;
+                    Label titleLb = new Label { Text = "📖 Hướng dẫn chăm sóc và trị bệnh", FontSize = 20, FontAttributes = FontAttributes.Bold, TextColor = Color.FromArgb("#E65100") };
+                    plantLb = new Label { Text = $"Cây trồng: {result.guide.plant}", FontAttributes = FontAttributes.Bold, TextColor = Color.FromArgb("#BF360C") };
+                    symtomsLb = new Label { Text = $"• Dấu hiệu: {result.guide.symptoms}", TextColor = Color.FromArgb("#000000") };
+                    preventionLb = new Label { Text = $"• Phòng ngừa: {result.guide.prevention}", TextColor = Color.FromArgb("#000000") };
+                    treatmentLb = new Label { Text = $"• Cách trị: {result.guide.treatment}", TextColor = Color.FromArgb("#000000") };
+                       
+                    newGuide.Children.Add(titleLb);
+                    newGuide.Children.Add(plantLb);
+                    newGuide.Children.Add(symtomsLb);
+                    newGuide.Children.Add(preventionLb);
+                    newGuide.Children.Add(treatmentLb);
                 }
+
+                MainResult.Children.Add(newGuideFrame);
 
                 if (result.alternatives != null && result.alternatives.Count > 0)
                 {
@@ -258,6 +295,50 @@ public partial class PlantPage : ContentPage
                             //Gắn grid vào frame    
                             frame.Content = grid;
 
+                            var tapGesture = new TapGestureRecognizer();
+                            tapGesture.SetBinding(TapGestureRecognizer.CommandParameterProperty, new Binding("."));
+                            try
+                            {
+
+                                tapGesture.Tapped += (s, e) =>
+                                {
+                                    // Xử lý khi Border được nhấn
+                                    if (s is View view &&
+                                        view.BindingContext is Alternative tappedItem)
+                                    {
+                                        diseaseNameLb.Text = $"Tên bệnh: {tappedItem.label}";
+                                        predictScoreLb.Text = $"Độ chính xác: {tappedItem.score}";
+                                        if (tappedItem.guide != null)
+                                        {
+                                            newGuide.Children.Clear();
+                                            newGuideFrame.IsVisible = true;
+                                            Label titleLb = new Label { Text = "📖 Hướng dẫn chăm sóc và trị bệnh", FontSize = 20, FontAttributes = FontAttributes.Bold, TextColor = Color.FromArgb("#E65100") };
+                                            plantLb = new Label { Text = $"Cây trồng: {tappedItem.guide.plant}", FontAttributes = FontAttributes.Bold, TextColor = Color.FromArgb("#BF360C") };
+                                            symtomsLb = new Label { Text = $"• Dấu hiệu: {tappedItem.guide.symptoms}", TextColor = Color.FromArgb("#000000") };
+                                            preventionLb = new Label { Text = $"• Phòng ngừa: {tappedItem.guide.prevention}", TextColor = Color.FromArgb("#000000") };
+                                            treatmentLb = new Label { Text = $"• Cách trị: {tappedItem.guide.treatment}", TextColor = Color.FromArgb("#000000") };
+
+
+                                            newGuide.Children.Add(titleLb);
+                                            newGuide.Children.Add(plantLb);
+                                            newGuide.Children.Add(symtomsLb);
+                                            newGuide.Children.Add(preventionLb);
+                                            newGuide.Children.Add(treatmentLb);
+                                        }
+                                        else
+                                        {
+                                            newGuide.Children.Clear();
+                                            newGuideFrame.IsVisible = false;
+                                        }
+                                    };
+                                };
+                            }
+                            catch (Exception ex)
+                            {
+                                DisplayAlert("Lỗi", ex.ToString(), "OK");
+                            }
+                            frame.GestureRecognizers.Add(tapGesture);
+
                             return frame;
                         })
                     };
@@ -293,14 +374,12 @@ public partial class PlantPage : ContentPage
         {
             await DisplayAlert("Lỗi", ex.ToString(), "OK");
         }
+        finally
+        {
+            IsLoading = false; 
+        }
     }
 
-    private async Task CallPredictAsync(Stream imageStream)
-    {
-        using var client = new HttpClient();
-
-
-    }
 }
 
 
@@ -323,5 +402,6 @@ public class Guide
 public class Alternative
 {
     public String? label { get; set; } // tên của loại cây
+    public Guide? guide { get; set; } // Dấu hiệu, phòng và trị bệnh cho loại bệnh được dự đoán.
     public Double? score { get; set; } // độ chính xác
 }
