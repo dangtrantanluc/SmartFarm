@@ -14,7 +14,7 @@ import torch
 import json
 
 # Đăng nhập HuggingFace Hub (điền token của bạn vào)
-login(token="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")
+# login(token="")
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
