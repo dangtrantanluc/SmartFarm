@@ -30,19 +30,19 @@ namespace SmartFarm.ViewModels
         {
             if (!string.IsNullOrWhiteSpace(content))
             {
-                var note = new Note { Content = content, IsDone = false };
-                Notes.Add(note);
-                FilterNotes();
+                //var note = new Note { Content = content, TimeStamp= DateTime.Today.AddHours(8) };
+                //Notes.Add(note);
+                //FilterNotes();
             }
         }
 
         public void FilterNotes()
         {
             FilteredNotes.Clear();
-            foreach (var note in Notes.Where(n => n.Content.ToLower().Contains(SearchText.ToLower())))
-            {
-                FilteredNotes.Add(note);
-            }
+            //foreach (var note in Notes.Where(n => n.Content.ToLower().Contains(SearchText.ToLower())))
+            //{
+            //    FilteredNotes.Add(note);
+            //}
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

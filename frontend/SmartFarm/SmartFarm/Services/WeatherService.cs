@@ -16,7 +16,7 @@ namespace SmartFarm.Services
         {
             _httpClient = new HttpClient
             {
-                BaseAddress = new Uri("http://192.168.1.153:8000")// địa chỉ API FastAPI
+                BaseAddress = new Uri("http://192.168.1.110:8000")// địa chỉ API FastAPI
             };
         }
 

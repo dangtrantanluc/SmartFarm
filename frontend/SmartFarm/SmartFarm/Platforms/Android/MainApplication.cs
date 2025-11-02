@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
-
+using Microsoft.Maui.Platform;
+using Plugin.Firebase.Core.Platforms.Android;
 namespace SmartFarm
 {
     [Application]
@@ -12,5 +13,10 @@ namespace SmartFarm
         }
 
         protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+        public override void OnCreate()
+        {
+            base.OnCreate();
+        }
+
     }
 }

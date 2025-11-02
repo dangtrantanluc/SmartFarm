@@ -1,12 +1,83 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SmartFarm.Views.AccountPage"
-             Title="AccountPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             x:Class="SmartFarm.Views.AccountPage">
+    
+    <ContentPage.Resources>
+        <Style x:Key="SettingsItemStyle" TargetType="Grid">
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="ColumnSpacing" Value="15"/>
+            <Setter Property="BackgroundColor" Value="Transparent"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="15">
+
+            <Border StrokeShape="RoundRectangle 10" 
+                    BackgroundColor="White" 
+                    Padding="20" 
+                    StrokeThickness="0">
+                <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
+                    <Border StrokeShape="RoundRectangle 50" 
+                            HeightRequest="60" 
+                            WidthRequest="60" 
+                            StrokeThickness="0">
+                        <Image Source="avatar.jpg" Aspect="AspectFill" />
+                    </Border>
+
+                    <VerticalStackLayout VerticalOptions="Center">
+                        <Label Text="Tài khoản" 
+                               FontAttributes="Bold" 
+                               FontSize="18" />
+                        <Label Text="user@gmail.com" 
+                               TextColor="Gray" 
+                               FontSize="14" />
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Border>
+
+            <Border StrokeShape="RoundRectangle 10" 
+                    BackgroundColor="White" 
+                    StrokeThickness="0">
+                <VerticalStackLayout>
+
+                    <Grid Style="{StaticResource SettingsItemStyle}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="setting_icon.png" HeightRequest="24" WidthRequest="24" Grid.Column="0"/>
+                        <Label Text="Cài đặt" FontSize="16" VerticalOptions="Center" Grid.Column="1"/>
+                    </Grid>
+
+                    <BoxView HeightRequest="1" Color="#EEEEEE" />
+
+                    <Grid Style="{StaticResource SettingsItemStyle}">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnLogoutTapped" />
+                        </Grid.GestureRecognizers>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Image Source="logout_icon.png" 
+                               HeightRequest="24" 
+                               WidthRequest="24" 
+                               Grid.Column="0"/>
+
+                        <Label Text="Đăng xuất" 
+                               TextColor="Red" 
+                               FontAttributes="Bold"
+                               FontSize="16"
+                               VerticalOptions="Center" 
+                               Grid.Column="1"/>
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

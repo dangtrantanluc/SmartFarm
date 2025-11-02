@@ -99,7 +99,5 @@ def get_qa_chain():
     return rag_chain
 
 
-# pdf_path = r"C:/Users/Admin/Downloads/S.pdf"
-
 
 rag_chain = get_qa_chain()

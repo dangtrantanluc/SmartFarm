@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="SmartFarm.PlantPage"
+             NavigationPage.HasNavigationBar="False"
+             Shell.NavBarIsVisible="False">
+	<Grid>
+		<!-- Ảnh nền -->
+		<Image Source="bg_predict.png"
+           Aspect="AspectFill"
+           ZIndex="-1"
+           x:Name="bgPredict"/>
+
+		<ScrollView>
+			<VerticalStackLayout 
+                Padding="20" 
+                Spacing="20"                 
+                >
+
+				<Label
+                    x:Name="titlePage"
+                    Text="Nhận diện bệnh"
+                    FontSize="28"
+                    FontAttributes="Bold"
+                    BackgroundColor="Transparent"
+                    HorizontalTextAlignment="Center"
+                    />
+
+				<Border x:Name ="frameTakePicture"
+                        Padding="10" 
+                        BackgroundColor="White"
+                        Margin="0,10,0,0"
+                        HorizontalOptions="Fill">
+					<Border.Shadow>
+						<Shadow Brush="Gray" Opacity="0.5" Radius="10" />
+					</Border.Shadow>
+					<Border.StrokeShape>
+						<RoundRectangle CornerRadius="10" />
+					</Border.StrokeShape>
+                    
+					<VerticalStackLayout Spacing="10">
+
+						<!-- Thêm Grid để chồng Button X lên Image -->
+                        <Grid HeightRequest="250">
+                            <Image x:Name="SelectedImage"
+                                            Aspect="AspectFit"  
+                                            BackgroundColor="#E0E0E0"
+                                            HorizontalOptions="Fill"
+                                            VerticalOptions="Fill"/>
+
+                            <!-- Button X ở góc phải trên -->
+                            <Button x:Name="ClearButton"
+                                            Text="X"
+                                            Clicked="OnClearClicked"
+                                            BackgroundColor="Red"
+                                            TextColor="White"
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            Padding="0"
+                                            WidthRequest="35"
+                                            HeightRequest="35"
+                                            HorizontalOptions="End"  
+                                            VerticalOptions="Start"  
+                                            IsVisible="False"
+                                            ZIndex="2"/>
+                            <!--!Ẩn -->
+                        </Grid>
+
+                        <VerticalStackLayout 
+                                Spacing="5"
+                                HorizontalOptions="Fill"
+                                VerticalOptions="Center">
+
+                            <Button Text="Chụp ảnh"
+									Clicked="OnCameraClicked"
+									BackgroundColor="#4285F4"
+									TextColor="White"
+                                    CornerRadius="10"
+                                    HeightRequest="40"
+                                    HorizontalOptions="Fill"
+                               />
+
+                            <Button Text="Chọn ảnh từ thư viện"
+							        Clicked="OnPickImageClicked"
+							        BackgroundColor="#34A853"
+							        TextColor="White"
+                                    CornerRadius="10"
+                                    HeightRequest="40"
+                                    HorizontalOptions="Fill"
+                               />
+
+
+                            <Button Text="Tìm kiếm"
+									Clicked="OnUploadClicked"
+									BackgroundColor="#FBBC05"
+									TextColor="White"
+                                    CornerRadius="10"
+                                    HeightRequest="40"
+                                    HorizontalOptions="Fill"
+                               />
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+				</Border>
+
+				<Border
+                    x:Name="predictResult"
+                    BackgroundColor="White"
+                    Stroke="#4CAF50"
+                    Margin="20"
+                    Padding="15"
+                    >
+					<Border.Shadow>
+						<Shadow Brush="Gray" Opacity="0.5" Radius="10" />
+					</Border.Shadow>
+					<Border.StrokeShape>
+						<RoundRectangle CornerRadius="20" />
+					</Border.StrokeShape>
+
+					<VerticalStackLayout Spacing="10">
+						<Label Text="KẾT QUẢ NHẬN DIỆN" FontSize="20" FontAttributes="Bold" TextColor="#388E3C" HorizontalOptions="Center"/>
+
+						<VerticalStackLayout 
+							x:Name="MainResult"
+							Spacing="20">
+
+						
+						</VerticalStackLayout>
+					</VerticalStackLayout>
+				</Border>
+			</VerticalStackLayout>
+			
+		</ScrollView>
+		<!-- Lớp overlay loading -->
+		<Grid BackgroundColor="#80000000"
+              IsVisible="{Binding IsLoading}">
+			<ActivityIndicator IsRunning="True"
+               Color="White"
+               WidthRequest="60"
+               HeightRequest="60"
+               VerticalOptions="Center"
+               HorizontalOptions="Center" />
+		</Grid>
+	</Grid>
+	
+</ContentPage>

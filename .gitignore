@@ -74,3 +74,10 @@ Thumbs.db
 # Log files
 *.log
 logs/
+<<<<<<< HEAD
+=======
+
+backend/serviceAccountKey.json
+frontend/SmartFarm/SmartFarm/Platforms/Android/google-services.json
+frontend/SmartFarm/SmartFarm/resources/serviceAccountKey.json
+>>>>>>> 0900bd101d85f93834d509ee7303e64d6eeb2485
