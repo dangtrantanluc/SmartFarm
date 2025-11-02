@@ -7,6 +7,19 @@
     xmlns:local="clr-namespace:SmartFarm"
     Title="SmartFarm">
 
+<!-- <<<<<<< HEAD
+
+    <ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage" />
+
+     <ShellContent 
+        Title="Camera" 
+        ContentTemplate="{DataTemplate local:PlantPage}" />
+
+======= -->
+    <!-- Thanh điều hướng dưới cùng (Bottom Tab Bar) -->
     <!-- Thanh điều hướng dưới cùng (Bottom Tab Bar) -->
     <TabBar>
 
@@ -16,6 +29,15 @@
             ContentTemplate="{DataTemplate views:MainPage}" />
 
         <ShellContent
+            Icon="camera1.png"
+            Route="CameraPage"
+            ContentTemplate="{DataTemplate views:CameraPage}" />
+            <!-- ContentTemplate="{DataTemplate local:PlantPage}" /> -->
+
+        <ShellContent
+            Icon="bell1.png"
+            Route="NotificationPage"
+            ContentTemplate="{DataTemplate views:NotificationPage}" />
             Icon="post.png"
             Route="TakeNotePage"
             ContentTemplate="{DataTemplate views:TakeNotePage}" />

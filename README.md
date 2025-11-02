@@ -4,6 +4,8 @@
 # create virtual environment
 python -m venv .venv
 
+source venv/bin/activate   # macOS/Linux
+
 
 .venv\Scripts\activate      # Windows
 
@@ -11,6 +13,5 @@ python -m venv .venv
 pip install -r requirements.txt
 
 # Run backend
-fastapi backend/app/dev main.py --host 0.0.0.0 --port 8000
 
 fastapi dev backend/app/main.py --host 0.0.0.0 --port 8000

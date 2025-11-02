@@ -15,7 +15,7 @@ public partial class MainPage : ContentPage
         MessagesView.ItemsSource = Messages;
 
         _httpClient.BaseAddress = new Uri("http://192.168.88.251:8000");
-        _httpClient.Timeout = TimeSpan.FromSeconds(180); 
+        _httpClient.Timeout = TimeSpan.FromSeconds(180);
 
     }
 
@@ -57,12 +57,12 @@ public partial class MainPage : ContentPage
         {
             Messages.Add(new Message { Text = $"❌ Lỗi kết nối: {ex.Message}", IsUser = false });
         }
-    
 
-    // Cuộn xuống tin nhắn mới nhất
-    //if (Messages.Count > 0)
-    //    MessagesView.ScrollTo(Messages.Count - 1, ScrollToPosition.End, animate: true);
-}
+
+        // Cuộn xuống tin nhắn mới nhất
+        //if (Messages.Count > 0)
+        //    MessagesView.ScrollTo(Messages.Count - 1, ScrollToPosition.End, animate: true);
+    }
 }
 
 public class Message

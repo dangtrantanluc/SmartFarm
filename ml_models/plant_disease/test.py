@@ -1,3 +1,5 @@
-import torch
+import pandas as pd
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print("Đang đọc dữ liệu từ file JSON...")
+data = pd.read_json(r'D:\DangTranTanLuc\Chatbot\ml_models\data\data.json')
+print(data.head())

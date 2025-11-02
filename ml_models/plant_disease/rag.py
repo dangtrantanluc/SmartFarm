@@ -92,7 +92,10 @@ def get_qa_chain():
         retriever=retriever,
         combine_docs_chain=document_chain
     )
-    print("RAG chain created successfully.")
+    # print("RAG chain created successfully.")
+    # query = "Lá cà chua bị bệnh gì khi xuất hiện đốm nâu?"
+    # result = rag_chain.invoke({"input": query})
+    # print("Sample query result:", result)
     return rag_chain
 
 

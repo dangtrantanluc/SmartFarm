@@ -3,34 +3,34 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmartFarm.MainPage">
 
-    <Grid RowDefinitions="*,Auto" Padding="10">
-        <!-- Danh sách tin nhắn -->
-        <CollectionView x:Name="MessagesView" Grid.Row="0">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Padding="5">
-                        <Border StrokeThickness="0"
+	<Grid RowDefinitions="*,Auto" Padding="10">
+		<!-- Danh sách tin nhắn -->
+		<CollectionView x:Name="MessagesView" Grid.Row="0">
+			<CollectionView.ItemTemplate>
+				<DataTemplate>
+					<Grid Padding="5">
+						<Border StrokeThickness="0"
                                 Background="{Binding IsUser, Converter={StaticResource BoolToColorConverter}}"
                                 StrokeShape="RoundRectangle 15"
                                 HorizontalOptions="{Binding IsUser, Converter={StaticResource BoolToAlignConverter}}">
-                            <Border.Padding>
-                                <Thickness>10</Thickness>
-                            </Border.Padding>
-                            <Label Text="{Binding Text}" TextColor="White"/>
-                        </Border>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+							<Border.Padding>
+								<Thickness>10</Thickness>
+							</Border.Padding>
+							<Label Text="{Binding Text}" TextColor="White"/>
+						</Border>
+					</Grid>
+				</DataTemplate>
+			</CollectionView.ItemTemplate>
+		</CollectionView>
 
-        <!-- Ô nhập + nút gửi -->
-        <StackLayout Grid.Row="1" Orientation="Horizontal" Spacing="5">
-            <Entry x:Name="MessageEntry"
+		<!-- Ô nhập + nút gửi -->
+		<StackLayout Grid.Row="1" Orientation="Horizontal" Spacing="5">
+			<Entry x:Name="MessageEntry"
                    Placeholder="Nhập tin nhắn..."
                    HorizontalOptions="FillAndExpand"/>
-            <Button Text="Gửi"
+			<Button Text="Gửi"
                     Clicked="OnSendClicked"/>
-        </StackLayout>
-    </Grid>
+		</StackLayout>
+	</Grid>
 
 </ContentPage>
