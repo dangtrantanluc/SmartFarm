@@ -90,7 +90,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="OldMainPage.xaml.cs">
+	  <Compile Update="Views\ChatbotPage.xaml.cs">
+	    <DependentUpon>ChatbotPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\OldMainPage.xaml.cs">
 	    <DependentUpon>OldMainPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
@@ -102,6 +105,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Views\ChatbotPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\AccountPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

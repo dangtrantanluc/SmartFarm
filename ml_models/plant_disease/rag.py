@@ -23,7 +23,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 data = pd.read_json(r'D:\DangTranTanLuc\Chatbot\ml_models\data\data.json')
 
 # Prompt hệ thống
-system_prompt = "Context: {context}\n\nQuestion: {input}"
+system_prompt = "{context}"
 
 
 quant_config = BitsAndBytesConfig(load_in_4bit=True,
@@ -35,7 +35,7 @@ model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen1.5-0.5B-Chat", quantizat
 
 rag_prompt = ChatPromptTemplate.from_messages([
    
-    ("human", "Context: {context}\n\nQuestion: {input}")
+    ("{context}")
 ])
 
 
@@ -54,12 +54,11 @@ pipe = pipeline(
 )
 
 llm = HuggingFacePipeline(pipeline=pipe)
-
 def get_qa_chain():
     # Load tài liệu PDF
     with open(r'D:\DangTranTanLuc\Chatbot\ml_models\data\data.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
-    documents = [Document(page_content=f"Hỏi: {d['question']}\nĐáp: {d['answer']}") for d in data]
+    documents = [Document(page_content=f" {d['answer']}") for d in data]
 
     # Cắt nhỏ văn bản với chunk nhỏ hơn để tránh vượt quá giới hạn token
     text_splitter = CharacterTextSplitter(

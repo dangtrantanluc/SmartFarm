@@ -60,10 +60,12 @@
                                  HeightRequest="38"
                                  BackgroundColor="Transparent"
                                  HorizontalOptions="End"
-                                 VerticalOptions="Center"/>
+                                 VerticalOptions="Center"
+                                 Clicked="OnChatbotClicked"/>
                     </Grid>
                 </StackLayout>
-
+                <!-- Khung chat bot -->
+               
                 <!-- Ngày tháng -->
                 <Label Grid.Row="1" Grid.ColumnSpan="2"
                        Text="{Binding CurrentDate}"
