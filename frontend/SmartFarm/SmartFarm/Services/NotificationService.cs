@@ -25,7 +25,7 @@ namespace SmartFarm.Services
             _firebaseClient = new FirebaseClient(_baseUrl);
             _httpClient = new HttpClient
             {
-                BaseAddress = new Uri("http://192.168.1.110:8000")// địa chỉ API FastAPI
+                BaseAddress = new Uri("http://192.168.88.51:8000")// địa chỉ API FastAPI
             };
         }
 

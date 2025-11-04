@@ -45,29 +45,22 @@ def health():
 async def predict(file: UploadFile = File(...), top_k: int = Form(3)):
     if file.content_type.split("/")[0] != "image":
         raise HTTPException(status_code=400, detail="File must be an image.")
-
     contents = await file.read()
     loop = asyncio.get_running_loop()
-
     # Chạy hàm predict trong threadpool
-    results = await loop.run_in_executor(executor, predict_image_bytes, model, device, contents, CLASS_NAMES, top_k)
-
+    results = await loop.run_in_executor(
+        executor, predict_image_bytes, model, device, contents, CLASS_NAMES, top_k)
     top = results[0]
     predicted_label = top["label"]
     confidence = top["score"]
     guide = DISEASE_GUIDE.get(predicted_label, None)
-
     predicted_label_vn = GoogleTranslator(source='en', dest='vi').translate(predicted_label)
-
     alternatives = []
     for item in results:
         altGuide = DISEASE_GUIDE.get(item["label"])
         label_vn = GoogleTranslator(source='en', dest='vi').translate(item["label"])
         score = item["score"]
         alternatives.append({"label": label_vn,"guide": altGuide, "score": float(score)})
-        
-    
-    
     return {
         "predicted": predicted_label_vn,
         "confidence": confidence,

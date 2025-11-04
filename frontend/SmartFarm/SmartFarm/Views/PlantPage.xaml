@@ -44,11 +44,12 @@
 
 						<!-- Thêm Grid để chồng Button X lên Image -->
                         <Grid HeightRequest="250">
+							
                             <Image x:Name="SelectedImage"
-                                            Aspect="AspectFit"  
-                                            BackgroundColor="#E0E0E0"
-                                            HorizontalOptions="Fill"
-                                            VerticalOptions="Fill"/>
+                                Aspect="AspectFit"  
+                                BackgroundColor="#E0E0E0"
+                                HorizontalOptions="Fill"
+                                VerticalOptions="Fill"/>
 
                             <!-- Button X ở góc phải trên -->
                             <Button x:Name="ClearButton"
@@ -68,12 +69,11 @@
                             <!--!Ẩn -->
                         </Grid>
 
-                        <VerticalStackLayout 
+						<VerticalStackLayout 
                                 Spacing="5"
                                 HorizontalOptions="Fill"
                                 VerticalOptions="Center">
-
-                            <Button Text="Chụp ảnh"
+							<Button Text="Chụp ảnh"
 									Clicked="OnCameraClicked"
 									BackgroundColor="#4285F4"
 									TextColor="White"
@@ -81,8 +81,7 @@
                                     HeightRequest="40"
                                     HorizontalOptions="Fill"
                                />
-
-                            <Button Text="Chọn ảnh từ thư viện"
+							<Button Text="Chọn ảnh từ thư viện"
 							        Clicked="OnPickImageClicked"
 							        BackgroundColor="#34A853"
 							        TextColor="White"
@@ -90,9 +89,7 @@
                                     HeightRequest="40"
                                     HorizontalOptions="Fill"
                                />
-
-
-                            <Button Text="Tìm kiếm"
+							<Button Text="Nhận diện"
 									Clicked="OnUploadClicked"
 									BackgroundColor="#FBBC05"
 									TextColor="White"

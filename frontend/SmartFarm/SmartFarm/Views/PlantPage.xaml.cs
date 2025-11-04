@@ -37,7 +37,7 @@ public partial class PlantPage : ContentPage
 
         titlePage.WidthRequest = screenWidth;
 
-        _httpClient.BaseAddress = new Uri("http://192.168.1.110:8000");
+        _httpClient.BaseAddress = new Uri("http://192.168.88.51:8000");
         _httpClient.Timeout = TimeSpan.FromSeconds(180);
 
 
@@ -127,23 +127,18 @@ public partial class PlantPage : ContentPage
             await DisplayAlert("Lỗi", "Không đọc được ảnh.", "OK");
             return;
         }
-
         using var form = new MultipartFormDataContent();
         using var content = new StreamContent(stream);
-
         content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
         form.Add(content, "file", System.IO.Path.GetFileName(photo.FileName));
         // Thêm tham số top_k
         form.Add(new StringContent("3"), "top_k");
-
-
         try
         {
             IsLoading = true;
             // Gửi request tới FastAPI
             var resp = await _httpClient.PostAsync("/plant/predict", form);
             resp.EnsureSuccessStatusCode();
-
             if (resp.IsSuccessStatusCode)
             {
                 var json = await resp.Content.ReadAsStringAsync();

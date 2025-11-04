@@ -3,7 +3,6 @@ from contextlib import asynccontextmanager
 from backend.app.routers import chatbot, plant_disease, weather, notification
 from backend.app.services import notification_service
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # ---- Khởi động khi server bật ----

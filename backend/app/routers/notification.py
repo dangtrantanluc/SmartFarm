@@ -20,4 +20,3 @@ async def save(request: Notification):
 @router.delete("/remove/{userId}/{noteKey}")
 async def remove(userId: str, noteKey: str):
     delete_notification(userId, noteKey)    
-

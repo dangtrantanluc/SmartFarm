@@ -36,6 +36,7 @@ def load_model(model_path: str, device=None, num_classes=None, class_names_path=
             class_names = [x.strip() for x in f.readlines()]
     return model, class_names, device
 
+
 def predict_image_bytes(model, device, image_bytes, class_names=None, top_k=3):
     img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
     x = transform(img).unsqueeze(0).to(device)  # shape [1,3,H,W]
