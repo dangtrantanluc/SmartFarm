@@ -1,54 +1,183 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:local="clr-namespace:SmartFarm.Effects"
              x:Class="SmartFarm.Views.TakeNotePage"
-             Title="TakeNotePage">
-	<ScrollView>
-		<VerticalStackLayout
-            Padding="20,0"
-            Spacing="10">
-			<!-- Thanh tìm kiếm -->
-			<SearchBar Placeholder="Search" Text="{Binding SearchText}" />
+             NavigationPage.HasNavigationBar="False"
+             Shell.NavBarIsVisible="False">
+	<Grid>
+		<AbsoluteLayout>
+			<Grid
+				AbsoluteLayout.LayoutBounds="0,0,1,1" 
+				AbsoluteLayout.LayoutFlags="All"
+				>
+				<!-- Thanh tìm kiếm -->
+				<SearchBar Placeholder="Search" Text="{Binding SearchText}"
+					   Margin="30" WidthRequest="400"
+						 Grid.Row="0" />	
 
-			<!-- Danh sách công việc -->
-			<CollectionView ItemsSource="{Binding FilteredNotes}">
-				<CollectionView.ItemTemplate>
-					<DataTemplate>
-						<Frame BackgroundColor="White" CornerRadius="10" Padding="10" Margin="5">
-							<HorizontalStackLayout>
-								<CheckBox IsChecked="{Binding IsDone}" />
-								<Label Text="{Binding Content}" FontSize="18" VerticalOptions="Center">
-									<Label.Triggers>
-										<DataTrigger TargetType="Label" Binding="{Binding IsDone}" Value="True">
-											<Setter Property="TextDecorations" Value="Strikethrough" />
-											<Setter Property="TextColor" Value="Gray" />
-										</DataTrigger>
-									</Label.Triggers>
-								</Label>
-							</HorizontalStackLayout>
-						</Frame>
-					</DataTemplate>
-				</CollectionView.ItemTemplate>
-			</CollectionView>
+				<!-- Danh sách công việc -->
+				<CollectionView Grid.Row="1" Margin="0,100,0,0" ItemsSource="{Binding FilteredNotes}">
+					<CollectionView.ItemTemplate>
+						<DataTemplate>
+							<Frame BackgroundColor="#c6edc9" CornerRadius="10" Padding="10" Margin="5" ZIndex="11">
+								<HorizontalStackLayout x:Name="NotesList">
+									<!--<CheckBox IsChecked="{Binding IsDone}" />-->
+									<Frame
+										Margin="10,5"
+										Padding="15,10"
+										CornerRadius="12"
+										HasShadow="True"
+										BackgroundColor="LightGreen"
+										BorderColor="DarkGreen">
 
-			<Editor x:Name="NoteEntry"
-                Placeholder="Add a new todo item"
-                AutoSize="TextChanges"
-                MaxLength="500"
-                BackgroundColor="White"
-                TextChanged="OnTextChanged"
-                Unfocused="OnEditorUnfocused"/>
+										<Frame.GestureRecognizers>
+											<TapGestureRecognizer
+												Tapped="OnFrameTapped"/>
 
-			<!-- Ô nhập và nút thêm công việc -->
-			<Grid Padding="10">
-				<Button Text="+" BackgroundColor="#6C63FF" TextColor="White"
-                    Clicked="OnAddNote"
-                    WidthRequest="50" HeightRequest="50"
-                    CornerRadius="25" FontSize="24"
-                    HorizontalOptions="End"/>
+											</Frame.GestureRecognizers>
+
+										<Grid
+										ColumnDefinitions="*,Auto"
+										ColumnSpacing="20"  
+										VerticalOptions="Center">
+
+											<!-- Nội dung chính -->
+											<Label
+											Grid.Column="0"
+											Text="{Binding Message}"
+											FontSize="18"
+											FontAttributes="Bold"
+											TextColor="#212121"
+											VerticalOptions="Center"
+											WidthRequest="250"
+											MaxLines="10"
+											HorizontalOptions="StartAndExpand"
+											LineBreakMode="TailTruncation" />
+
+											<!-- Thời gian -->
+											<Label
+											Grid.Column="1"
+											Text="{Binding TimeDisplay}"
+											FontSize="18"
+											TextColor="OrangeRed"
+											VerticalOptions="Center"
+											HorizontalOptions="End"
+											FontAttributes="Bold"
+											Margin="10,0,0,0" />
+											<!-- 👈 thêm margin trái -->
+										</Grid>
+									</Frame>
+								</HorizontalStackLayout>
+							</Frame>
+						</DataTemplate>
+					</CollectionView.ItemTemplate>
+				</CollectionView>
 			</Grid>
 
-		</VerticalStackLayout>
-	</ScrollView>
+			<!-- Ô nhập và nút thêm công việc -->
+			<Grid 
+				AbsoluteLayout.LayoutBounds="1,1,AutoSize,AutoSize"
+				AbsoluteLayout.LayoutFlags="PositionProportional"
+				Margin="10"
+				Padding="10">
+				<Button Text="+" BackgroundColor="#6C63FF" TextColor="White"
+						Clicked="OnAddNote"
+						WidthRequest="50" HeightRequest="50"
+						CornerRadius="25" FontSize="24"
+						Margin="0,0,10,37"
+						HorizontalOptions="End"/>
+			</Grid>
+		</AbsoluteLayout>
+		<!-- Nền mờ -->
+		<BoxView x:Name="Overlay"
+				 BackgroundColor="Black"
+				 Opacity="0.5"
+				 IsVisible="False"
+				 InputTransparent="False"
+				 ZIndex="10"
+				 >
+			<BoxView.GestureRecognizers>
+				<TapGestureRecognizer Tapped="DisablePopUp" />
+			</BoxView.GestureRecognizers>
+		</BoxView>
+
+		<Frame x:Name="InfoFrame"
+			   IsVisible="False"
+			   CornerRadius="10"
+			   HorizontalOptions="Center"
+			   VerticalOptions="Center"
+			   HasShadow="True">
+			<VerticalStackLayout
+					BackgroundColor="White"
+					WidthRequest="250"
+					HeightRequest="180">
+				<Editor x:Name="noteEntry"
+						Placeholder="Thêm một công việc"
+						AutoSize="TextChanges"
+						HeightRequest="60"
+						MaxLength="500"
+						FontSize="16"
+						BackgroundColor="White"
+						TextChanged="OnTextChanged"
+						Unfocused="OnEditorUnfocused"/>
+
+				<HorizontalStackLayout>
+					<Label Text="Chọn giờ hẹn:" 
+						FontSize="18" 
+						Margin="10"/>
+
+					<Border
+						BackgroundColor="White"
+						Stroke="#4CAF50"
+						>
+						<Border.Shadow>
+							<Shadow Brush="Gray" Opacity="0.5" Radius="10" />
+						</Border.Shadow>
+						<Border.StrokeShape>
+							<RoundRectangle CornerRadius="10"/>
+						</Border.StrokeShape>
+						<TimePicker x:Name="timePicker"
+							Time="12:00:00"
+							Visual="None"
+							Format="HH:mm"
+							TextColor="White"
+							BackgroundColor="Green"
+							TimeSelected="OnTimeChanged"
+						/>
+					</Border>
+				</HorizontalStackLayout>
+
+				<HorizontalStackLayout
+					WidthRequest="200"
+					HorizontalOptions="Center">
+					<Button x:Name="AddBtn"
+						IsVisible="True"
+						Text="Thêm" BackgroundColor="Green" TextColor="White"
+						Clicked="SaveSChedule"
+						Margin="10"
+						WidthRequest="80" HeightRequest="50"
+						CornerRadius="15" FontSize="16"
+						HorizontalOptions="End"/>
+					<Button x:Name="CancelBtn"
+						IsVisible="False"
+						Text="Xóa" BackgroundColor="Green" TextColor="White"
+						Clicked="CancelUpdate"
+						Margin="10"
+						WidthRequest="80" HeightRequest="50"
+						CornerRadius="15" FontSize="16"
+						HorizontalOptions="End"/>
+					<Button x:Name="SaveBtn"
+						IsVisible="False"
+						Text="Lưu" BackgroundColor="Green" TextColor="White"
+						Clicked="UpdateSChedule"
+						Margin="10"
+						WidthRequest="80" HeightRequest="50"
+						CornerRadius="15" FontSize="16"
+						HorizontalOptions="End"/>
+				</HorizontalStackLayout>
+			</VerticalStackLayout>
+		</Frame>
+	</Grid>
 
 </ContentPage>

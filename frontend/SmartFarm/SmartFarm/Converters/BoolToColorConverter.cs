@@ -12,7 +12,7 @@ namespace SmartFarm
         object? IValueConverter.Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             bool isUser = (bool)value;
-            return isUser ? Colors.Blue : Colors.Gray;
+            return isUser ? Colors.Blue : Colors.Blue;
         }
 
         object? IValueConverter.ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

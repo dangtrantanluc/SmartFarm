@@ -19,6 +19,9 @@ def chatbot(query: QueryRequest):
     try:
         print("Chatbot endpoint accessed")
         response = rag.rag_chain.invoke({"input": query.query})
-        return {"response": response["answer"]}
+        response_text = response["answer"]
+        if response_text.startswith("Human:"):
+            response_text = response_text[len("Human:"):].strip()
+        return  response_text
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

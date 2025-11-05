@@ -248,10 +248,14 @@
 
 //    private record Article(string Title, string Description, string Url, string Image, string Source);
 //}
+using Plugin.Firebase.CloudMessaging;
+using SmartFarm.ViewModels;
+using System.Collections.ObjectModel;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text.Json;
-using System.Xml.Linq;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace SmartFarm.Views;
 
@@ -266,6 +270,9 @@ public partial class MainPage : ContentPage
     // RSS Dân Việt (feed tổng)
     private const string RssFallbackUrl = "https://danviet.vn/dv-tin-tuc.rss";
 
+    public ObservableCollection<Message> Messages { get; set; }
+    private readonly HttpClient _httpClient = new();
+
     private readonly WeatherViewModel _viewModel;
 
 
@@ -275,7 +282,6 @@ public partial class MainPage : ContentPage
         _ = LoadNewsAsync();
         _viewModel = new WeatherViewModel();
         BindingContext = _viewModel;
-
         // Goi api khi khoi dong trang
         _ = _viewModel.LoadWeatherAsync();
 
@@ -423,7 +429,12 @@ public partial class MainPage : ContentPage
             return false;
         }
     }
-
+    // chatbot
+    private async void OnChatbotClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new ChatbotPage());
+    }
+   
     // ================= Render UI =================
     private void RenderArticles(IEnumerable<Article> articles)
     {
@@ -501,6 +512,9 @@ public partial class MainPage : ContentPage
             });
         }
     }
-
+    //public class ChatResponse
+    //{
+    //    public string response { get; set; }
+    //}
     private record Article(string Title, string Description, string Url, string Image, string Source);
 }
