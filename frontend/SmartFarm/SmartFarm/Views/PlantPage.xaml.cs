@@ -37,7 +37,7 @@ public partial class PlantPage : ContentPage
 
         titlePage.WidthRequest = screenWidth;
 
-        _httpClient.BaseAddress = new Uri("http://192.168.88.51:8000");
+        _httpClient.BaseAddress = new Uri("http://192.168.1.105:8000");
         _httpClient.Timeout = TimeSpan.FromSeconds(180);
 
 
@@ -69,10 +69,8 @@ public partial class PlantPage : ContentPage
                 return;
             }
         }
-
         photo = await MediaPicker.CapturePhotoAsync();
         if (photo is null) return;
-
         await LoadPhotoToImage();
     }
 
@@ -99,11 +97,9 @@ public partial class PlantPage : ContentPage
     {
         await using var originalStream = await photo!.OpenReadAsync();
         if (originalStream is null) return;
-
         using var memoryStream = new MemoryStream();
         await originalStream.CopyToAsync(memoryStream);
         memoryStream.Position = 0;  // Reset position để read từ đầu
-
         SelectedImage.Source = ImageSource.FromStream(() => new MemoryStream(memoryStream.ToArray()));
         ClearButton.IsVisible = true;  // Hiện nút X khi có ảnh  
     }

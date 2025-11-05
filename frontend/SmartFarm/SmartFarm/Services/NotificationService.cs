@@ -25,7 +25,7 @@ namespace SmartFarm.Services
             _firebaseClient = new FirebaseClient(_baseUrl);
             _httpClient = new HttpClient
             {
-                BaseAddress = new Uri("http://192.168.88.51:8000")// địa chỉ API FastAPI
+                BaseAddress = new Uri("http://192.168.1.105:8000")// địa chỉ API FastAPI
             };
         }
 
@@ -37,10 +37,8 @@ namespace SmartFarm.Services
                 message = message,
                 timestamp = time
             };
-
             var json = JsonSerializer.Serialize(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-
             var response = await _httpClient.PostAsync("/notifications/save", content);
             return response.IsSuccessStatusCode;    
         }
@@ -69,7 +67,6 @@ namespace SmartFarm.Services
                 var tokenAccess = credential as ITokenAccess;
                 // Lấy access token
                 var accessToken = await tokenAccess.GetAccessTokenForRequestAsync();
-
                 // Tạo object chứa dữ liệu mới
                 var updatedNotification = new
                 {
@@ -77,8 +74,7 @@ namespace SmartFarm.Services
                     timestamp = newTime.ToString("yyyy-MM-ddTHH:mm:sszzz")
                 };
                 var jsonData = JsonSerializer.Serialize(updatedNotification);
-
-                // 4️⃣ Gửi PATCH request đến node notifications/{userId}/{noteKey}
+                // Gửi PATCH request đến node notifications/{userId}/{noteKey}
                 var request = new HttpRequestMessage(
                     HttpMethod.Patch,
                     $"{_baseUrl}/notifications/{userId}/{noteKey}.json"
@@ -86,10 +82,8 @@ namespace SmartFarm.Services
                 {
                     Content = new StringContent(jsonData, Encoding.UTF8, "application/json")
                 };
-
                 // Gắn access token vào header
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
                 var client = new HttpClient();
                 var response = await client.SendAsync(request);
 

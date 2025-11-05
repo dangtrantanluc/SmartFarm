@@ -42,13 +42,11 @@ public partial class TakeNotePage : ContentPage
         string userId = Preferences.Get("user_uid", string.Empty);
         string message = noteEntry.Text;
         DateTime timestamp = DateTime.Today.Add(timePicker.Time);
-        
         await notificationService.SaveNotification(userId, message, timestamp);
         _ = _viewModel.LoadNotesAsync();
         noteEntry.Text = "";
         Overlay.IsVisible = false;
         InfoFrame.IsVisible = false;
-
     }
     private async void UpdateSChedule(object sender, EventArgs e)
     {
@@ -57,7 +55,6 @@ public partial class TakeNotePage : ContentPage
         DateTime newTime = DateTime.Today.Add(timePicker.Time);
 
         await notificationService.updateNotification(userId, tempKeyOfNote, newMessage, newTime);
-
         _ = _viewModel.LoadNotesAsync();
         noteEntry.Text = "";
         Overlay.IsVisible = false;

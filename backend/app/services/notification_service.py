@@ -31,23 +31,19 @@ def check_notifications():
     now = datetime.now(pytz.timezone('Asia/Ho_Chi_Minh')).strftime("%H:%M")
     ref = db.reference("notifications")
     notifications = ref.get() or {}
-
     print("Notifications:", notifications)
     for user_id, user_notifications in notifications.items():
         for notif_id, notif in user_notifications.items():
             notif_time_full = notif.get("timestamp")
             message = notif.get("message", "")
             fcm_token = get_fcm_token(user_id)
-
             print("Giờ hiện tại:", now)
             print("Giờ thông báo:", notif_time_full)
             print("UserID:", user_id)
             print("FCM:", fcm_token)
-
             # Chuyển timestamp Firebase thành định dạng HH:MM
             if notif_time_full:
                 notif_time = datetime.fromisoformat(notif_time_full).strftime("%H:%M")
-
                 if notif_time == now and fcm_token:
                     send_alarm_notification(user_id, message, fcm_token)
             

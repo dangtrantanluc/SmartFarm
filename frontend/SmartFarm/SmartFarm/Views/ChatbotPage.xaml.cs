@@ -15,7 +15,7 @@ public partial class ChatbotPage : ContentPage
         Messages = new ObservableCollection<Message>();
         MessagesView.ItemsSource = Messages;
 
-        _httpClient.BaseAddress = new Uri("http://192.168.1.102:8000");
+        _httpClient.BaseAddress = new Uri("http://192.168.88.51:8000");
         _httpClient.Timeout = TimeSpan.FromSeconds(180);
 
     }

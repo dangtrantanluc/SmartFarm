@@ -20,7 +20,7 @@ import json
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-data = pd.read_json(r'D:\DangTranTanLuc\Chatbot\ml_models\data\data.json')
+data = pd.read_json(r'ml_models\data\data.json')
 
 # Prompt hệ thống
 system_prompt = "{context}"
@@ -56,7 +56,7 @@ pipe = pipeline(
 llm = HuggingFacePipeline(pipeline=pipe)
 def get_qa_chain():
     # Load tài liệu PDF
-    with open(r'D:\DangTranTanLuc\Chatbot\ml_models\data\data.json', 'r', encoding='utf-8') as f:
+    with open(r'ml_models\data\data.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
     documents = [Document(page_content=f" {d['answer']}") for d in data]
 
@@ -69,7 +69,7 @@ def get_qa_chain():
 
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
     try:
-        vectorstore = FAISS.load_local(r"D:\DangTranTanLuc\Chatbot\ml_models\plant_disease\faiss_plant_disease", embeddings, allow_dangerous_deserialization=True)
+        vectorstore = FAISS.load_local(r"Seminar\faiss_plant_disease", embeddings, allow_dangerous_deserialization=True)
         print("FAISS vector store loaded successfully.")
     except Exception:
         vectorstore = FAISS.from_documents(texts, embeddings)

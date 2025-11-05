@@ -21,7 +21,6 @@
 						<DataTemplate>
 							<Frame BackgroundColor="#c6edc9" CornerRadius="10" Padding="10" Margin="5" ZIndex="11">
 								<HorizontalStackLayout x:Name="NotesList">
-									<!--<CheckBox IsChecked="{Binding IsDone}" />-->
 									<Frame
 										Margin="10,5"
 										Padding="15,10"
@@ -29,18 +28,14 @@
 										HasShadow="True"
 										BackgroundColor="LightGreen"
 										BorderColor="DarkGreen">
-
 										<Frame.GestureRecognizers>
 											<TapGestureRecognizer
 												Tapped="OnFrameTapped"/>
-
-											</Frame.GestureRecognizers>
-
+										</Frame.GestureRecognizers>
 										<Grid
 										ColumnDefinitions="*,Auto"
 										ColumnSpacing="20"  
 										VerticalOptions="Center">
-
 											<!-- Nội dung chính -->
 											<Label
 											Grid.Column="0"
@@ -53,7 +48,6 @@
 											MaxLines="10"
 											HorizontalOptions="StartAndExpand"
 											LineBreakMode="TailTruncation" />
-
 											<!-- Thời gian -->
 											<Label
 											Grid.Column="1"

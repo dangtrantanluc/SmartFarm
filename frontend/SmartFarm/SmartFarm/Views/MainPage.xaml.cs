@@ -396,7 +396,7 @@ public partial class MainPage : ContentPage
 
                     return new Article(title, desc, link, image, "Dân Việt RSS");
                 })
-                // 🔍 Chỉ lấy tin có từ khóa "nông nghiệp" hoặc "nông sản"
+                // Chỉ lấy tin có từ khóa "nông nghiệp" hoặc "nông sản"S
                 .Where(a =>
                     a.Title.Contains("nông nghiệp", StringComparison.OrdinalIgnoreCase) ||
                     a.Description.Contains("nông nghiệp", StringComparison.OrdinalIgnoreCase) ||

@@ -23,7 +23,6 @@ namespace SmartFarm
             try
             {
                 CrossFirebase.Initialize(this);
-                
                 CrossFirebaseCloudMessaging.Current.NotificationReceived += (s, e) =>
                 {
                     Console.WriteLine($"📩 NotificationReceived: {e.Notification?.Title} - {e.Notification?.Body}");
@@ -33,11 +32,8 @@ namespace SmartFarm
                 {
                     Console.WriteLine($"🎯 Token changed: {e.Token}");
                 };
-
                 var deviceToken = await CrossFirebaseCloudMessaging.Current.GetTokenAsync();
-
                 Console.WriteLine("Firebase initialized successfully with device token is: " + deviceToken);
-
             }
             catch (Exception ex)
             {
@@ -51,23 +47,17 @@ namespace SmartFarm
             var channelName = "Thông báo quan trọng";
             var channelDescription = "Thông báo hiển thị xổ xuống màn hình";
             var notificationManager = NotificationManagerCompat.From(this);
-
             var intent = new Intent(this, typeof(MainActivity));
             intent.AddFlags(ActivityFlags.ClearTop);
-
             var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.Immutable);
-
-
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
             {
                 var channel = new NotificationChannel(channelId, channelName, NotificationImportance.High)
                 {
                     Description = channelDescription
                 };
-              
                 notificationManager.CreateNotificationChannel(channel);
             }
-
             var builder = new NotificationCompat.Builder(this, channelId)
                           .SetContentTitle(title)
                           .SetContentText(body)
@@ -76,9 +66,7 @@ namespace SmartFarm
                           .SetPriority((int)NotificationPriority.High)
                           .SetContentIntent(pendingIntent)
                           .SetDefaults((int) NotificationDefaults.All);
-
             notificationManager.Notify(1000, builder.Build());
         }
-
     }
 }

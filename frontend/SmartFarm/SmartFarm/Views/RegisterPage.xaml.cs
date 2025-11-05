@@ -59,8 +59,6 @@ namespace SmartFarm.Views
                 string idToken = signupResult.idToken;
 
                 string fcm_token = await CrossFirebaseCloudMessaging.Current.GetTokenAsync();
-
-                Console.WriteLine("Firebase initialized successfully with device token is: " + fcm_token);
                 // Lưu thông tin user vào Firebase Database
                 await SaveUserToDatabase(uid, email.Split('@')[0], email, idToken, fcm_token);
 

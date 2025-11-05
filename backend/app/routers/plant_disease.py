@@ -28,18 +28,16 @@ router = APIRouter()
 # --- Thread pool để tránh block event loop ---
 executor = ThreadPoolExecutor(max_workers=2)
 
-# --- Kiểu dữ liệu trả về ---
+# --- Kiểu dữ liệu trả về ---   
 class PredictResponse(BaseModel):
     predicted: str
     confidence: float
     alternatives: list = []
     guide: dict | None = None
 
-
 @router.get("/health")
 def health():
     return {"status": "ok", "device": str(device)}
-
 
 @router.post("/predict", response_model=PredictResponse)
 async def predict(file: UploadFile = File(...), top_k: int = Form(3)):
